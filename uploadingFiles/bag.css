@@ -1,0 +1,28 @@
+#bag {
+    width: 600px;
+    min-height: 40px;
+}
+
+#bag > * {
+    color: white;
+    background: black;
+    display: block;
+    margin: auto;
+    max-width: 250px;
+    border: 1px solid white;
+    -moz-box-shadow: 0 0 12px 5px black;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+#bag div {
+    max-width: 250px;
+    max-height: 250px;
+}
+
+#bag iframe {
+    -moz-transform-origin: 0% 0%;
+    -moz-transform: scale(0.4);
+    width: 625px;
+    height: 625px;
+}

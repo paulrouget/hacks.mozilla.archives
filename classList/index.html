@@ -1,0 +1,172 @@
+<!doctype html>
+
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../resources/styles/hacks.css" type="text/css" media="screen"/>
+        <title>classList benchmarks</title>
+    </head>
+
+    <body>
+        <a href="http://hacks.mozilla.org" id="hackstitle">
+            <h1>hacks.mozilla.org</h1>
+        </a>
+
+        <div id="demo">
+            <h1 id="demotitle">classList</h1>
+            <h2>fast mode switch</h2>
+            <style>
+              #boxmode.expert > #help,
+              #boxmode.expert > label[for="postpone"],
+              #boxmode.expert > label[for="lang"] {
+                display: none;
+              }
+            </style>
+
+            <button onclick="document.getElementById('boxmode').classList.toggle('expert');">
+              Toggle expert mode
+            </button>
+            <div class="box" id="boxmode">
+              <label for="nick">Name: <input type="text" id="nick" /></label>
+              <label for="status">Status: <input type="text" id="status" /></label>
+              <p id="help"> Blablablablabla...</p>
+              <label for="postpone">Postpone: <input type="checkbox" id="postpone" /></label>
+              <label for="lang">Lang: <input type="text" id="lang" /></label>
+            </div>
+
+
+            <h2>benchmarks</h2>
+            <div class="box">
+                <div id="add">
+                    <h2>add()</h2>
+                    <button onclick="runTest(this, 'normal')">Normal test</button>
+                    <button onclick="runTest(this, 'native')">Native test</button>
+                </div>
+                <div id="contains">
+                    <h2>contains()</h2>
+                    <button onclick="runTest(this, 'normal')">Normal test</button>
+                    <button onclick="runTest(this, 'native')">Native test</button>
+                </div>
+                <div id="remove">
+                    <h2>remove()</h2>
+                    <button onclick="runTest(this, 'normal')">Normal test</button>
+                    <button onclick="runTest(this, 'native')">Native test</button>
+                </div>
+            </div>
+        </div>
+        <div id="hackspromo">
+            <a href="http://www.twitter.com/mozhacks">
+                <img src="../resources/images/logos/twittericon.png"
+                width="60" height="60" alt="@mozhacks on Twitter" />
+            </a>
+            <a href="http://hacks.mozilla.org">
+                <img src="../resources/images/logos/feed.png"
+                width="60" height="60" alt="Hacks Blog" />
+            </a>
+            <a href="http://www.youtube.com/mozhacks">
+                <img src="../resources/images/logos/youtube.png"
+                width="60" height="60" alt="Hacks Videos" />
+            </a>
+            <p>Demo by <a href="http://twitter.com/rik24d">Anthony Ricaud</a></p>
+        </div>
+<script src="compat.js"></script>
+<script>
+var iterations = 1000;
+var test = {
+    initNode: function() {
+        var p = document.createElement('p');
+        var className = "";
+        for (var i=0; i<iterations; i++) {
+            className += " a" + i;
+        }
+        p.className = className;
+        return p;
+    },
+    
+    add: {
+        normal: function () {
+            var p = document.createElement('p');
+            var start = new Date();
+            for (var i = 0; i<iterations; i++) {
+                addClass(p, "a" + i);
+            }
+            return new Date() - start;
+        },
+        native: function () {
+            var p = document.createElement('p');
+            var start = new Date();
+            for (var i = 0; i<iterations; i++) {
+                p.classList.add("a" + i);
+            }
+            return new Date() - start;
+        }
+    },
+    
+    contains: {
+        normal: function () {
+            var p = test.initNode();
+            
+            var start = new Date();
+            for (var i=0; i<iterations; i++) {
+                containsClass(p, "a" + i);
+            }
+            return new Date() - start;
+        },
+        native: function () {
+            var p = test.initNode();
+            
+            var start = new Date();
+            for (var i=0; i<iterations; i++) {
+                p.classList.contains("a" + i);
+            }
+            return new Date() - start;
+        }
+    },
+    
+    remove: {
+        normal: function () {
+            var p = test.initNode();
+            
+            var start = new Date();
+            for (var i=0; i<iterations; i++) {
+                removeClass(p, "a" + i);
+            }
+            return new Date() - start;
+        },
+        native: function () {
+            var p = test.initNode();
+            
+            var start = new Date();
+            for (var i=0; i<iterations; i++) {
+                p.classList.remove("a" + i);
+            }
+            return new Date() - start;
+        }
+    }
+}
+function runTest(node, kind) {
+    var results = [];
+    
+    var method = node.parentNode.id;
+    
+    var resultsElement = document.createElement('p');
+    
+    for (var i = 0; i<5; i++) {
+        results.push( test[method][kind]() );
+    }
+    
+    var sum = 0;
+    for (i in results)
+        sum += results[i];
+    var mean = sum / results.length;
+    
+    var resultsText = kind + ' test: ' + results.join(' - ') + ' - Mean: ' + mean;
+    resultsElement.appendChild(document.createTextNode(resultsText));
+    node.parentNode.appendChild(resultsElement);
+}
+
+</script>
+
+    </body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html> <head>
+<title></title>
+
+<script>
+var period = 2000;
+var w = 2 * Math.PI / period;
+
+var t0;
+var tl;
+
+var r = 128;
+var cx = r, cy = r;
+var s = r * 2;
+
+var running = false;
+
+// Statistics
+var sum = 0;
+var N = 0;
+
+var discards = 0;
+
+var sum_big = 0;
+var N_big = 0;
+
+function draw(ctx, t) {
+    ctx.clearRect(0, 0, s, s);
+    ctx.strokeStyle = 'rgb(64, 64, 64)';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + r * Math.sin(w * t), cy - r * Math.cos(w * t));
+    ctx.stroke();
+}
+
+function alloc(dt) {
+    if (dt > 100)
+        dt = 100;
+    for (var i = 0; i < dt * 1000; ++i) {
+        var o = new String("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+    }
+}
+
+function cycle() {
+    if (!running) return;
+
+    var canvas = document.getElementById('clock');
+    var ctx = canvas.getContext('2d');
+
+    var t1 = new Date;
+    if (t0 == undefined) t0 = t1;
+    draw(ctx, t1 - t0);
+
+    if (tl != undefined) {
+	var dt = t1 - tl;
+	alloc(dt);
+
+	sum += dt;
+	++N;
+	var mean = sum / N;
+
+        if (dt > mean * 1.7) {
+            if (discards < 5) {
+                ++discards;
+            } else {
+                sum_big += dt;
+                ++N_big;
+            }
+        }
+        var mean_big = sum_big / N_big;
+
+        ctx.font = '12px monospace';
+        ctx.fillText('Frame delay (ms)    ' + Math.round(mean), 4, 24);
+
+        var gc_delay = N_big ? Math.round(mean_big - mean) : 'getting data...';
+        ctx.fillText('Est. GC delay (ms): ' + gc_delay, 4, 44);
+    }
+
+    tl = t1;
+    window.setTimeout(cycle, 0);
+}
+
+function start() {
+    if (running) return;
+    running = true;
+    cycle();
+}
+
+function stop() {
+    if (!running) return;
+    running = false;
+
+    tl = undefined;
+}
+
+</script>
+
+</head>
+
+<body>
+<h1></h1>
+
+<canvas id='clock' width='256' height='256'></canvas>
+<p>
+
+<button onclick='start();'>Start</button>
+<button onclick='stop();'>Stop</button>
+</body> </html>

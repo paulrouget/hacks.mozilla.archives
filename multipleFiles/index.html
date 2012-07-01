@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../resources/styles/hacks.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="dropbox.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="bag.css" type="text/css" media="screen"/>
+        <script>
+            function listFiles() {
+                var input = document.querySelector("input[type='file']");
+                var ul = document.querySelector("#bag>ul");
+                while (ul.hasChildNodes()) {
+                    ul.removeChild(ul.firstChild);
+                }
+                for (var i = 0; i < input.files.length; i++) {
+                    var li = document.createElement("li");
+                    li.innerHTML = input.files[i].name;
+                    ul.appendChild(li);
+                }
+            }
+        </script>
+        <script src="../resources/js/log.js"></script>
+        <style>
+            form {
+                width: 400px;
+                margin: auto;
+            }
+        </style>
+        <title>Multiple File Input &amp; Firefox 3.6</title>
+    </head>
+
+    <body>
+
+        <a href="http://hacks.mozilla.org" id="hackstitle">
+            <h1>hacks.mozilla.org</h1>
+        </a>
+
+
+        <div id="blackbox"/>
+        <div id="demo">
+            <h1 id="demotitle">Multiple File Input &amp; Firefox 3.6</h1>
+            <div id="intro">
+                <p><a href="http://hacks.mozilla.org/2009/12/multiple-file-input-in-firefox-3-6/">See related blog post on hacks.mozilla.org.</a></p>
+                <p>To see multiple file input in action, select several files from the file picker. Click send to see the list of the files uploaded server side (note that the files are not actually stored on the server).</p>
+            </div>
+
+            <form method="post" action="../resources/webservices/devnull2.php" enctype="multipart/form-data">
+                <input name='uploads[]' type="file" multiple="" onchange="listFiles()"/>
+                <div id="bag"><ul/></div>
+                <input type="submit" value="Send">
+            </form>
+        </div>
+        <div id="hackspromo">
+            <a href="http://www.twitter.com/mozhacks">
+                <img src="../resources/images/logos/twittericon.png"
+                    width="60" height="60" alt="@mozhacks on Twitter"
+                    longdesc="http://twitter.com/mozhacks"/>
+            </a>
+            <a href="http://hacks.mozilla.org">
+                <img src="../resources/images/logos/feed.png"
+                    width="60" height="60" alt="Hacks Blog"
+                    longdesc="http://hacks.mozilla.org" />
+            </a>
+
+            <a href="http://www.youtube.com/mozhacks">
+                <img src="../resources/images/logos/youtube.png"
+                    width="60" height="60" alt="Hacks Videos"
+                    longdesc="http://www.youtube.com/mozhacks" />
+            </a>
+            <p id="download">To take full advantage of the demo, you need to run a modern browser. Try the latest beta of Firefox 3.6 (<a href="http://www.mozilla.com/firefox/all-rc.html">download</a>).</p>
+            <p class="author">Demo by <a href="http://twitter.com/paulrouget">Paul Rouget</a>.</p>
+        </div>
+
+    </body>
+</html>
+
+

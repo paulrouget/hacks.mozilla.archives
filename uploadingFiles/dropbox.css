@@ -1,0 +1,25 @@
+#dropbox {
+    display: block;
+    margin: auto;
+    z-index: 9999;
+    margin-top: 10px;
+}
+
+#dropbox path {
+    stroke: #aaa;
+    stroke-width: 10px;
+    stroke-linejoin: round;
+    fill: rgba(0, 0, 0, 0.5);
+    stroke-dasharray: 42, 4;
+}
+
+#dropbox text {
+    fill: white;
+    font-size: 20px;
+    text-anchor: middle;
+}
+
+#dropbox[dragenter="true"] {
+    -moz-transform: scale(2);
+}
+

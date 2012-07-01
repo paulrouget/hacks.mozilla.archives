@@ -1,0 +1,63 @@
+em {
+	font-size: 12px;
+}
+
+:root {
+  font-family: "Nokia Sans", Tahoma, sans-serif !important;
+  font-size: 2mm !important;
+}
+
+body {
+  background: black;
+  color:#CCCCCC;
+}
+      
+#panel {
+  padding: 0;
+  margin: 0;
+  background-color: transparent !important;
+}
+      
+ul {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+      
+
+li {
+  -moz-appearance: none;
+  vertical-align: middle;
+  width :500px;
+  margin: 2mm;
+  line-height: 40px;
+  min-width: 14.4mm !important; /* button size */
+  color: #fff !important;
+  font-size: 180%;
+  padding: 0.2mm 0.5mm;
+  border-width: 8px !important;
+  -moz-border-image: url("../images/buttondark-default-64.png") 8 repeat repeat;
+  background: url("../images/no-sync.png") center left no-repeat;
+  -moz-appearance: none !important;
+  padding-left: 40px;
+}
+
+li:first-child {
+  background: url("../images/add.png") center right no-repeat;
+}
+
+:first-letter {
+  text-transform: uppercase;
+}
+
+li > img {
+  border-left: 0.1mm solid #808080;
+  padding-left: 2.2mm;
+  padding-right: 2.2mm;
+  float: right;
+}
+
+li[sync="true"] {
+  background: url("../images/sync.png") center left no-repeat;
+}
+

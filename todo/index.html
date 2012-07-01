@@ -1,0 +1,33 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us" manifest="tasks.manifest">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Task Manager</title>
+
+    <link type="text/css" rel="stylesheet" href="css/main.css" />
+    <script type="application/javascript" src="js/tasksserver.js"></script>
+    <script type="application/javascript" src="js/taskseffects.js"></script>
+    <script type="application/javascript" src="js/tasksmanager.js"></script>
+  </head>
+  <body onload="TasksManager.initialize()" onunload="TasksManager.uninitialize()">
+
+  <em>
+Create a task (click on the green + sign), go offline (File -> Work Offline), create another task and 
+delete the previous one, go back online and notice that the to do list is up to date and includes the 
+changes you made offline.
+    <p><a href="http://hacks.mozilla.org/">See related blog post on hacks.mozilla.org.</a></p>
+  </em>
+
+    <em>
+      Note that all all visitors to this page are sharing the same to do list.
+      <br/>
+      The server code has not been designed to allow a lot of submissions at the same time. Expect strange behaviors :)
+    </em>
+
+    <ul id="panel">
+      <li onclick="TasksManager.create()">Create a new task</li>
+    </ul>
+
+
+
+  </body>
+</html>

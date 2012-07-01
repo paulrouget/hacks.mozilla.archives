@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <!--
+
+    ***************************************************
+    *                                                 *
+    * DZ-Slides: HTML Template for your presentations *
+    *                                                 *
+    ***************************************************
+      More information: http://paulrouget.com/dzslides
+
+
+    Author: @paulrouget <paul@mozilla.com>
+
+    Contributor(s):
+      - Anthony Ricaud <rik24d@gmail.com>
+      - Louis-Rémi Babé <lrbabe@gmail.com>
+
+
+    LICENSE:
+      DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+      Version 2, December 2004
+
+      Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+      Everyone is permitted to copy and distribute verbatim or modified
+      copies of this license document, and changing it is allowed as long
+      as the name is changed.
+
+      DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+      TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+      0. You just DO WHAT THE FUCK YOU WANT TO.
+
+
+    -->
+
+
+
+    <title>Firefox Beta3</title>
+
+        <!--
+        ************************************
+        *                                  *
+        *               CSS                *
+        *                                  *
+        ************************************
+        -->
+
+
+      <style>
+        /*
+        ************************************
+        *    CSS CORE:                     *
+        *    YOU DON'T WANT TO EDIT THIS   *
+        *    (but you can)                 *
+        ************************************
+        */
+
+        html { overflow: hidden; }
+        body, html { height: 100%; padding: 0px; }
+        body { margin: auto; position: relative; }
+        img, video { vertical-align: middle; }
+        /* FIXME : Mandatory for flex box model, Firefox bug */
+        /* See JS hack */
+        section > div { width: 100%; display: -moz-box; -moz-box-orient : vertical; -moz-box-pack : center; -moz-box-align : center; }
+        section > div { width: 100%; display: -webkit-box; -webkit-box-orient : vertical; -webkit-box-pack : center; -webkit-box-align : center; }
+        footer { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; position: absolute; bottom: 0; padding: 1em; width: 100%; }
+        .flex-wrapper { display: -moz-box; display: -webkit-box; -moz-box-orient: horizontal; -webkit-box-orient: horizontal; width: 100%; }
+        footer .flex-space { -moz-box-flex: 1; -webkit-box-flex: 1; }
+        section { -moz-transition-property: -moz-transform, opacity; -moz-transition-duration: 1s, 1s; pointer-events: none; display: block; width: 100%; margin: auto; position: absolute; padding: 0 10px; opacity: 0; -moz-box-sizing: border-box; }
+        section { -webkit-transition-property: -webkit-transform, opacity; -webkit-transition-duration: 1s, 1s; pointer-events: none; -webkit-box-sizing: border-box; }
+        section h1, section h2, section h3, section p { text-align: center; margin: .3em; margin: 0; padding: 0; }
+        section[aria-selected] { opacity: 1; pointer-events: auto; -moz-transition-delay: 1s, 1s; -webkit-transition-delay: 1s, 1s; }
+        pre { font-size: 35px; border-left: 6px solid white; padding-left: 10px; white-space: pre-wrap;       /* css-3 */ word-wrap: break-word;       /* Internet Explorer 5.5+ */ line-height: 1.3em; } 
+        a { color: white!important; text-decoration: none; }
+
+        /*
+        ************************************
+        *    CSS OPTIONS:                  *
+        *    YOU WANT TO EDIT THIS         *
+        *                                  *
+        ************************************
+        */
+
+        /* Want your own font? Use font-face */
+        @font-face  {
+          /* Uncomment and add your own font file */
+          font-family: fface;
+          src: url(font.ttf);
+        }
+
+        /* The backgrounds of all your slides */
+        body {
+          /* Could be an image, a color, a gradient */
+          background-image: -moz-radial-gradient( 50% 30% 90deg, circle, #006EA0 0%, #304160 80%);
+          /*background-image: -moz-radial-gradient( 50% 30% 90deg, circle, #C5C2B7 0%, #000 80%);*/
+          background-color: #006EA0;
+        }
+
+        /* This is the style of a slide */
+        section {
+          font-family: fface, "Palatino Linotype", "Book Antiqua", Palatino, serif;
+          font-weight: bold;
+          font-size: 60px;
+          text-shadow: 0px -2px 0px #374683;
+          color: white;
+          /*
+          Your own font?
+          font-family: fface;
+          */
+        }
+
+        /* This part define the transitions between the slides
+           Here I propose 3 differents effect:
+             Default translation (classic "sliding" effect)
+             Rotation (a bit dizzy... "DZ"? You get it? \o/)
+             Nothing (just a fadein/fadeout)
+           With the CSS3 transformations, you can create your own.
+         */
+
+
+        /* Let me describe how the slides work:
+           A slide can be:
+           - the current slide
+           - A upcoming slide (from the "future")
+           - A slide already seen (from the "past")
+           With CSS, you describe where are those slide,
+           in the space. Then, a transition will animate
+           this.
+        */
+
+
+
+        /* "PAST" ******************************/
+        section {
+
+          /* The sliding effect */
+          -moz-transform: translate(-100%, 0);
+          -webkit-transform: translate(-100%, 0);
+
+          /* The rotating effect
+          -moz-transform: scale(0.3) rotate(180deg);
+          -webkit-transform: scale(0.3) rotate(180deg);
+          */
+
+          /* The nothing effect */
+          /* Well, just comment out the rotating and sliding effect*/
+
+        }
+
+        /* The footer with the title + the current slide number */
+        #footer {
+          display: none;
+          color: white;
+          opacity: 0.5;
+
+          /*
+          display: none;
+          */
+        }
+
+        body {
+          -moz-user-select: none;
+        }
+
+        /* "PRESENT" ****************************/
+        /* Current slide */
+        section[aria-selected] {
+          -moz-transform: scale(1.0) translate(0, 0);
+          -webkit-transform: scale(1.0) translate(0, 0);
+        }
+
+        /* "FUTURE" *****************************/
+        /* Selector not yet supported by Webkit :( */
+        section[aria-selected] ~ section {
+
+          /* The sliding effect */
+          -moz-transform: translate(100%, 0);
+          -webkit-transform: translate(100%, 0);
+
+          /* The rotating effect
+          -moz-transform: scale(5) rotate(-180deg);
+          -webkit-transform: scale(5) rotate(-180deg);
+          */
+
+          /* The nothing effect */
+          /* Well, just comment the rotating and sliding effect*/
+
+
+        }
+
+      </style>
+    </head>
+
+        <!--
+        ************************************
+        *                                  *
+        *        HTML: YOUR SLIDES         *
+        *                                  *
+        ************************************
+        -->
+
+      <section id="demo" data-onload="initDemo" data-onunload="stopDemo">
+        <style>
+          #demo {
+
+          }
+
+          #demo > div  {
+            -moz-box-pack: end;
+          }
+
+          #go {
+            -moz-transition-duration: 1s;
+            margin-bottom: 100px;
+          }
+
+          #go.pressed {
+            -moz-box-shadow: 0px 0px 15px 10px white;
+            -moz-transform: scale(1.3);
+            background-color: white;
+          }
+
+          #panel {
+            -moz-transform: scale(0);
+            -moz-transition: all 0.3s;
+            -moz-transition-timing-function: linear;
+            -moz-transform-origin: 50% 100%;
+          }
+          #panel.selected {
+            -moz-transform: scale(1);
+            -moz-transition: all 0.5s;
+            -moz-transition-timing-function: cubic-bezier(0.2, 0.2, 0.6, 3);
+          }
+
+
+          #panel, #go {
+            z-index: 10000;
+          }
+
+          #bag {
+            display: none;
+          }
+
+          .player {
+            position: absolute;
+            left: 0;
+            top: 0;
+            -moz-transform-origin: 0px 0px;
+            padding: 0px;
+            margin: 0px;
+            opacity: 0.9;
+          }
+
+          .player.selected {
+            z-index: 999;
+          }
+
+          .player > canvas {
+            padding: 0px;
+            margin: 0px;
+          }
+
+        </style>
+
+        <script src="sylvester.js"></script>
+        <script>
+          function initDemo(section) {
+            var go = document.getElementById("go");
+            var panel = document.getElementById("panel");
+            var toMove = null;
+
+            section.addEventListener("MozTouchDown", function(e) {
+              e.stopPropagation();
+            }, false);
+
+            go.addEventListener("mousedown", function(e) {e.preventDefault();}, true);
+
+            go.addEventListener("MozTouchDown", function(e) {
+              try {
+              panel.querySelector("video[src='jackie.webm']").currentTime = 4;
+              } catch(e) {};
+              go.classList.add("pressed");
+              window.setTimeout(function() {
+                panel.classList.toggle("selected");
+              }, 1000);
+
+
+            }, true);
+
+            var victims = document.querySelectorAll("svg foreignObject");
+            for (var i = 0, ii = victims.length; i < ii; i++) {
+              var v = victims[i];
+              v.addEventListener("MozTouchUp", function(e) {
+                toMove = null;
+              }, true);
+              v.addEventListener("mousedown", function(e) {e.preventDefault();}, true);
+
+              log("event listener added");
+              v.addEventListener("MozTouchDown", function(e) {
+                log("event received");
+                e.preventDefault();
+                toMove = e.originalTarget;
+                setTimeout(function() {
+                  if (!!toMove) {
+                    insert(toMove, e.clientX, e.clientY);
+                  }
+                }, 1000);
+              }, true);
+            }
+
+
+            go.addEventListener("MozTouchUp", function() {
+              go.classList.remove("pressed");
+            }, true);
+
+            function insert(node, x, y) {
+              var canvas = document.createElement("canvas");
+              var div = document.createElement("div");
+              div.appendChild(canvas);
+
+              node = document.getElementById("bag").appendChild(node);
+
+              panel.classList.remove("selected");
+              div.className = "player";
+
+              var width = node.tagName == "VIDEO" ? node.videoWidth:node.width;
+              var height = node.tagName == "VIDEO" ? node.videoHeight:node.height;
+
+              canvas.width = width;
+              canvas.height = height;
+
+              if (node.tagName == "VIDEO") {
+                node.play();
+		var _draw = function() {
+			draw(div);
+			window.mozRequestAnimationFrame(_draw);
+		}
+		window.mozRequestAnimationFrame(_draw);
+              }
+
+              section.firstChild.insertBefore(div, go);
+
+              div.mirror = node;
+              draw(div);
+
+              makeEditable(div);
+            }
+
+            var NOTHING = 0;
+            var DRAGGING = 1;
+            var TRANSFORMING = 2;
+            var CUTTING = 3;
+
+            var finger1 = {};
+            var finger2 = {};
+
+            var A0;
+            var B0;
+
+            var mode = NOTHING;
+            var moving = null;
+
+            var victim;
+
+            var OrgMatrix;
+
+            function makeEditable(div) {
+
+              // TOUCH DOWN
+
+              div.addEventListener("MozTouchDown", function(e) {
+                try {victim.classList.remove("selected");} catch(e) {}
+                victim = div;
+                victim.classList.add("selected");
+                if (mode == NOTHING) {
+                  mode = DRAGGING;
+
+                  finger1.id = e.streamId;
+                  finger1.x = e.clientX;
+                  finger1.y = e.clientY;
+
+                  A0 = {x: e.clientX, y: e.clientY}
+                  B0 = {x: e.clientX + 10, y: e.clientY}
+                  return;
+                }
+
+                if (mode == DRAGGING) {
+                  mode = TRANSFORMING;
+
+                  finger2.id = e.streamId;
+                  finger2.x = e.clientX;
+                  finger2.y = e.clientY;
+
+                  A0 = {x: finger1.x, y: finger1.y};
+                  B0 = {x: finger2.x, y: finger2.y};
+
+                  OrgMatrix = victim._m;
+
+                  return;
+                }
+              }, true);
+
+              // TOUCH UP
+
+              window.addEventListener("MozTouchUp", function(e) {
+                //if (mode == DRAGGING || mode == TRANSFORMING) {
+                  mode = NOTHING;
+                //}
+              }, true);
+
+              // TOUCH MOVE
+              window.addEventListener("MozTouchMove", function(e) {
+                if (finger1.id == e.streamId) {
+                  finger1.x = e.clientX;
+                  finger1.y = e.clientY;
+                }
+                if (finger2.id == e.streamId) {
+                  finger2.x = e.clientX;
+                  finger2.y = e.clientY;
+                }
+
+                if (mode == DRAGGING && finger1.id == e.streamId) {
+                  var A1 = {x: e.clientX, y: e.clientY}
+                  var B1 = {x: e.clientX + 10, y: e.clientY}
+                  consolidate(victim, victim._m, A0, B0, A1, B1);
+                  A0 = A1;
+                  B0 = B1;
+                }
+
+                if (mode == DRAGGING && finger1.id != e.streamId) {
+                  mode = CUTTING;
+                  A0 = {x: e.clientX, y: e.clientY};
+                }
+
+                if (mode == CUTTING && finger1.id != e.streamId) {
+                  var A1 = {x: e.clientX, y: e.clientY};
+                  if (((A1.x - A0.x) *(A1.x - A0.x) + (A1.y - A0.y) *(A1.y - A0.y)) > (60000)) {
+                    cut(A0, A1, finger1);
+                    mode = NOTHING;
+                  }
+                }
+
+                if (mode == TRANSFORMING && finger2.id == e.streamId) {
+                  consolidate(victim, OrgMatrix, A0, B0, finger1, finger2);
+                }
+
+              }, true);
+            }
+
+            function consolidate(elt, oldM, A0, B0, A1, B1) {
+              var m = ComputeTransform(A0, B0, A1, B1);
+
+              if (!!oldM) {
+                m = oldM.x(m);
+              }
+
+              elt._m = m;
+
+              elt.style.MozTransform = MatrixToString(m);
+            }
+
+
+
+            function draw(elt) {
+              var canvas = elt.firstChild;
+              canvas.ctx = canvas.getContext("2d");
+              var ctx = canvas.ctx;
+
+              ctx.drawImage(elt.mirror, 0, 0, canvas.width, canvas.height);
+              ctx.strokeStyle = "white";
+              ctx.lineWidth = 20;
+              ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+              if (!elt.cut) return;
+
+              for (var i = 0, ii = elt.cut.length; i < ii; i++) {
+                var v = elt.cut[i];
+                var [x0, y0, x1, y1, x3, y3, x2, y2] = v;
+                ctx.beginPath();
+                ctx.moveTo(x0, y0);
+                ctx.lineTo(x1, y1);
+
+                ctx.lineTo(x3, y3);
+                ctx.lineTo(x2, y2);
+
+                ctx.fillStyle = "rgba(0, 0, 0, 1)";
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fill();
+                ctx.globalCompositeOperation = "source-over";
+                ctx.lineWidth = 10;
+                ctx.stroke();
+              }
+            }
+
+
+
+            function cut(A0, A1, ref) {
+              var m = victim._m.inv();
+
+              var m11 = m.e(1, 1);
+              var m12 = m.e(1, 2);
+              var m21 = m.e(2, 1);
+              var m22 = m.e(2, 2);
+              var dx = m.e(3, 1);
+              var dy = m.e(3, 2);
+
+              A0.x = m11 * A0.x + m21 * A0.y + dx;
+              A0.y = m12 * A0.x + m22 * A0.y + dy;
+
+              A1.x = m11 * A1.x + m21 * A1.y + dx;
+              A1.y = m12 * A1.x + m22 * A1.y + dy;
+
+              var rx = m11 * ref.x + m21 * ref.y + dx;
+              var ry = m12 * ref.x + m22 * ref.y + dy;
+
+              var a = (A0.y - A1.y) / (A0.x - A1.x);
+              var b = A0.y - a * A0.x;
+
+              var fx = (ry - b) / a;
+              var fingerleft = fx > rx;
+              log(fingerleft);
+
+              var width = victim.offsetWidth;
+              var height = victim.offsetHeight;
+
+              var y0 = 0;
+              var x0 = -b / a;
+
+              var y1 = height;
+              var x1 = (y1 - b) / a;
+
+              var ctx = victim.firstChild.ctx;
+
+              var d = 1000;
+              var diff = Math.sqrt(d * d * (a * a + 1));
+
+              if (fingerleft && a > 0) {
+                b -= diff;
+              }
+              if (!fingerleft && a > 0) {
+                b += diff;
+              }
+              if (fingerleft && a <= 0) {
+                b += diff;
+              }
+              if (!fingerleft && a <= 0) {
+                b -= diff;
+              }
+
+              var y2 = 0;
+              var x2 = -b / a;
+
+              var y3 = height;
+              var x3 = (y3 - b) / a;
+
+             if (!victim.cut) {
+                victim.cut = [];
+              }
+              victim.cut.push([x0, y0, x1, y1, x3, y3, x2, y2]);
+
+              draw(victim);
+            }
+
+            function ComputeTransform (A0, B0, A1, B1) {
+              function findC(A, B) {
+                var C = {};
+                C.x = (B.y - A.y) + A.x;
+                C.y  = -1 * (B.x - A.x) + A.y;
+                return C;
+              }
+              var C0 = findC(A0, B0);
+              var C1 = findC(A1, B1);
+
+              var denom = A0.x * (C0.y - B0.y) - B0.x * C0.y + C0.x * B0.y + (B0.x - C0.x) * A0.y;
+              if (denom == 0) {
+                  throw("denom == 0");
+              }
+              var m11 = - (A0.y * (C1.x - B1.x) - B0.y * C1.x + C0.y * B1.x + (B0.y - C0.y) * A1.x) / denom;
+              var m12 = (B0.y * C1.y + A0.y * (B1.y - C1.y) - C0.y * B1.y + (C0.y - B0.y) * A1.y) / denom;
+              var m21 = (A0.x * (C1.x - B1.x) - B0.x * C1.x + C0.x * B1.x + (B0.x - C0.x) * A1.x) / denom;
+              var m22 = - (B0.x * C1.y + A0.x * (B1.y - C1.y) - C0.x * B1.y + (C0.x - B0.x) * A1.y) / denom;
+              var dx = (A0.x * (C0.y * B1.x - B0.y * C1.x) + A0.y * (B0.x * C1.x - C0.x * B1.x) + (C0.x * B0.y - B0.x * C0.y) * A1.x) / denom;
+              var dy = (A0.x * (C0.y * B1.y - B0.y * C1.y) + A0.y * (B0.x * C1.y - C0.x * B1.y) + (C0.x * B0.y - B0.x * C0.y) * A1.y) / denom;
+
+              return $M([
+                [m11, m12, 0],
+                [m21, m22, 0],
+                [dx , dy , 1]
+              ]);
+            }
+
+            function MatrixToString(m) {
+              return "matrix(" + m.e(1, 1) + ", " + m.e(1, 2) + ", " + m.e(2, 1) + ", " + m.e(2, 2) + ", " + m.e(3, 1) + "px, " + m.e(3, 2) +  "px)";
+            }
+          }
+
+          function stopDemo(section) {
+          }
+        </script>
+        <svg id="panel" width="400px" height="400px"  viewBox="-10 -10 420 420">
+        <path d="M 0 80 L 400 80 L 400 340 L 260 340 L 200 390 L 140 340 L 0 340 Z"
+        fill="rgba(0, 0, 0, 0.5)" stroke="#FFF" stroke-width="10px" style="stroke-linejoin: round;"/>
+
+        <foreignObject x="220" y="220" width="160" height="100">
+        <video preload="auto" src="burritttoooo.webm" onended="this.play()" width="100%"></video>
+        </foreignObject>
+
+        <foreignObject x="220" y="100" width="160" height="100">
+        <video preload="auto" src="jackie.webm" onended="this.play()" width="100%"></video>
+        </foreignObject>
+
+        <foreignObject x="20" y="100" width="160" height="100">
+        <img src="img1.jpg" width="100%">
+        </foreignObject>
+
+        <foreignObject x="20" y="220" width="160" height="100">
+        <img src="img2.jpg" width="100%">
+        </foreignObject>
+
+        </svg>
+        <div id="bag"></div>
+        <img id="go" src="go.png">
+      </section>
+
+    <script>
+
+      /*
+      ************************************
+      *                                  *
+      *            JAVASCRIPT            *
+      *  (You don't have to read this)   *
+      ************************************
+      */
+
+      function init() {
+        var firstFrame = window.location.hash? parseInt(window.location.hash.split("#")[1], 10) : 1;
+        var title = document.querySelector("title").textContent;
+        var slides = document.querySelectorAll("body > section");
+        for (var i = 1, il = slides.length; i <= il; i++) {
+          // FIXME : Mandatory for flex box model for vertical align
+          // Firefox bug :(
+          slides[i - 1].innerHTML = "<div>" + slides[i - 1].innerHTML + "</div>";
+          window.history[(i == 1? 'replace' : 'push') + 'State'](i, title + " ("+ i +"/"+ il +")", "#"+i);
+        }
+
+        var footer = document.createElement("footer");
+        footer.id = "footer";
+        footer.innerHTML = 
+          '<div class="flex-wrapper"><p>' + title + '</p>' +
+          '<p class="flex-space"></p>' + 
+          '<p id="index"><span class="pagenumber"></span> / ' + il +'</p>';
+        document.body.appendChild(footer);
+        history.go(- slides.length + firstFrame);
+
+
+        window.addEventListener("popstate", function(e) {
+          if(e.state) {
+            var old = document.querySelector("section[aria-selected]");
+            var next = document.querySelector("section:nth-of-type("+ e.state +")");
+
+            if (old) {
+              old.removeAttribute("aria-selected");
+              if (old.hasAttribute("data-onunload")) {
+                window[old.getAttribute("data-onunload")].call(window, old);
+              }
+            }
+
+            if (next) {
+              next.setAttribute("aria-selected", "true");
+              if (next.hasAttribute("data-onload")) {
+                window[next.getAttribute("data-onload")].call(window, next);
+              }
+            }
+
+
+            var index = document.querySelector("#index .pagenumber");
+            index.innerHTML = e.state;
+          }
+        }, true); 
+      }
+
+      function resize() {
+        var style = document.getElementById("resizeStyle");
+        if (!style) {
+          style = document.createElement("style");
+          style.id = "resizeStyle";
+          document.head.appendChild(style);
+        }
+        style.textContent = "body>section>div {height: "+ window.innerHeight +"px}";
+      }
+
+      window.addEventListener("resize", resize, true);
+      window.addEventListener("load", resize, true);
+      window.addEventListener("load", init, true);
+
+      // Webkit bug
+      // window.addEventListener("hashchange", init, true); // FIXME Webkit fires hashchange when it shouldn't
+      window.addEventListener("keydown", function(e) {
+        // Don't intercept keyboard shortcuts
+        if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) {
+          return;
+        }
+        if (   e.keyCode == 80 // p
+            || e.keyCode == 66 // b
+            || e.keyCode == 37 // left arrow
+        ) {
+          e.preventDefault();
+          history.back();
+        }
+        if (   e.keyCode == 78 // n
+            || e.keyCode == 32 // space
+            || e.keyCode == 39 // right arrow
+        ) {
+          e.preventDefault();
+          history.forward();
+        }
+      }, true);
+    </script>
+    <script>
+      (function () {
+        var startX;
+        var inGesture = false;
+        var id;
+
+        window.addEventListener("MozTouchDown", function(e) {
+          if (inGesture) return;
+
+          inGesture = true;
+
+          startX = e.clientX;
+          id = e.streamId;
+
+          e.preventDefault();
+        }, false);
+
+        document.body.addEventListener("MozTouchMove", function(e) {
+          if (!inGesture) return;
+          if (e.streamId != id) return;
+          var x = e.clientX - startX;
+
+          var TR = 100;
+
+          if (x < -TR) {
+            history.forward();
+            inGesture = false;
+          }
+          if (x > TR) {
+            history.back();
+            inGesture = false;
+          }
+
+          e.preventDefault();
+        }, false);
+
+        document.body.addEventListener("MozTouchUp", function(e) {
+          if (!inGesture) return;
+          if (e.streamId != id) return;
+          inGesture = false;
+        }, false);
+      })();
+    </script>
+  </body>
+  <script>
+    function log(msg) {
+      var elt = document.getElementById("log");
+      elt.value = msg + "\n" + elt.value;
+    }
+  </script>
+  <textarea id="log" style="position: absolute; opacity: 0; width: 30px; height: 30px;"></textarea>
+</html>
+
+<!--
+- triangle
+- press -> pi menu
+- something from Vlad???
+- update the SLIDE demo?
+- voile sous le panel
+- voile aussi dans le cas de l'édition
+- inertia
+-->

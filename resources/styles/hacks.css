@@ -1,0 +1,147 @@
+body {
+    background-image:url(../images/backgrounds/hacks.jpg);
+    background-color: #454545;
+    color: #FC0;
+    background-repeat: no-repeat;
+    font-family: monospace;
+}
+
+a {
+    color: #FC0;
+}
+a[type="mdc"]:after {
+    content: url(../images/logos/mdc.png);
+}
+
+#hackstitle {
+    top: 250px;
+    left: 0px;
+    height: 100px;
+    width: 270px;
+    min-width: 270px;
+    position: absolute;
+    display: block;
+    z-index: 99999;
+    text-indent: -10000px;
+}
+
+#demotitle {
+    font-family:Arial, Helvetica, sans-serif;
+    color:#FC0;
+    margin-left: 300px;
+}
+
+.toolbox {
+    border-top: 1px solid white;
+    padding-top: 10px;
+}
+
+img {
+    border: 0px;
+}
+
+.toolboxtitle {
+    font-size: 24px;
+}
+
+
+#hackspromo {
+    position: absolute;
+    color: white;
+    left: 15px;
+    top: 375px;
+}
+
+#demo {
+    margin-left: 300px;
+    max-width: 600px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+    background-color: rgba(43, 43, 43, 0.5);
+    padding-top: 100px;
+    padding-bottom: 100px;
+    border: 2px solid black;
+}
+
+#demotitle, h2 {
+    font-family: akashi;
+    text-shadow: black 0px 3px 0px;
+}
+
+#demotitle {
+    margin: auto;
+    width: 500px;
+    font-size: 130%;
+}
+
+#intro {
+    padding-top: 20px;
+    margin: auto;
+    width: 500px;
+}
+
+h2 {
+    font-size: 110%;
+}
+
+h2:before {
+    content: "> ";
+}
+
+p {
+    padding: 5px;
+}
+
+pre {
+    font-size: 8px;
+    font-family: auroe;
+    border-left: 2px solid white;
+    padding-left: 10px;
+}
+
+.box {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 15px;
+    width: 500px;
+    margin: auto;
+    text-align: justify;
+    text-shadow: black 0px 1px 1px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+button {
+    color: #fff !important;
+    background: transparent !important;
+    min-width: 5mm !important; /* button size */
+    min-height: 5mm !important; /* button size */
+    padding: 0.2mm 0.5mm;
+    border-width: 8px !important;
+    -moz-border-image: url("../images/borders//buttondark-default-64.png") 8 repeat repeat;
+    -moz-appearance: none !important;
+    font-weight: bold;
+}
+
+button:not([disabled="true"]):active:hover {
+    -moz-border-image: url("../images/borders/buttondark-active-64.png") 8 repeat repeat;
+}
+
+button[disabled="true"] {
+    color: #999!important;
+    font-weight: normal;
+}
+
+code {
+    font-style: italic;
+}
+
+.author {
+	max-width: 220px;
+}
+
+#download {
+	max-width: 180px;
+	text-align: justify;
+}

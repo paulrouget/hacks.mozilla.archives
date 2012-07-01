@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" manifest="offline.manifest">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>HTML5 Image Uploader</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/fonts.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/desktop.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="css/mobile.css" type="text/css" media="screen"/>
+    <!-- JS -->
+    <script src="js/extends/xhr.js"></script>
+    <script src="js/extends/canvas.js"></script>
+    <script src="js/extends/array.js"></script>
+    <script src="js/ismobile.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/emile.js"></script>
+    <script src="js/UI.js"></script>
+    <script src="js/dnd.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/files.js"></script>
+    <script src="js/twitpic.js"></script>
+    <script src="js/orientation.js"></script>
+    <script src="../resources/js/log.js"></script>
+  </head>
+  <body>
+    <div id="UI">
+      <div id="pages">
+
+        <!-- FRONTPAGE -->
+        <div id="frontpage">
+          <div id="dropbox">
+            <p>Drop zone</p>
+            <input type="file" multiple="" onchange="Files.newInput(this.files)"/>
+          </div>
+          <div id="previews"/>
+
+        </div>
+
+        <!-- EDITOR -->
+        <div id="editor">
+          <div id="editortoolbar">
+            <button onclick="Editor.ctx.turn(false)" title="rotate">←</button>
+            <button onclick="Editor.ctx.turn(true)" title="rotate">→</button>
+            <button onclick="Editor.ctx.flipVertically()" title="flip">↕</button>
+            <button onclick="Editor.ctx.flipHorizontally()" title="flip">↔</button>
+
+            <button onclick="Editor.ctx.initCrop()" title="Crop">⿴</button>
+            <button onclick="Editor.ctx.blackAndWhite()" title="black and white">⬔</button>
+            <button onclick="Editor.poster()" title="poster">«»</button>
+
+            <button id="cancelbutton" onclick="UI.closeEditor(false)" title="Cancel">Χ</button>
+            <button id="savebutton" onclick="UI.closeEditor(true)" title="Save">ok</button>
+          </div>
+          <canvas id="buffer"/>
+          <br/>
+          <div id="library">
+            <img src="../resources/images/tango/32x32/emotes/face-sad.png"/>
+            <img src="../resources/images/tango/32x32/emotes/face-smile.png"/>
+            <img src="../resources/images/tango/32x32/emotes/face-angel.png"/>
+            <img src="../resources/images/tango/32x32/emotes/face-devilish.png"/>
+            <img src="../resources/images/tango/32x32/emotes/face-monkey.png"/>
+            <img src="../resources/images/tango/32x32/emblems/emblem-favorite.png"/>
+            <img src="../resources/images/tango/32x32/emblems/emblem-important.png"/>
+          </div>
+          <br/>
+          <textarea id="comment"/>
+          <br/>
+          <button id="deleteButton" onclick="Files.remove(Editor.orgCanvas); UI.closeEditor(false)" title="delete">Delete image</button>
+        </div>
+      </div>
+
+      <!-- TOOLBOXES -->
+      <div id="toolboxes">
+        <div id="configure">
+          <p>Twitter credential</p>
+          <input id="username" value="username"/>
+          <input id="password" value="password"/>
+          <button id="credentialSave">save</button>
+        </div>
+        <div id="sidemenuright">
+          <div id="trashbox" class="empty"><img src="img/trash.png" width="100px"/></div>
+        </div>
+        <div id="sidemenuleft">
+          <button id="sendbutton" onclick="Twitpic.sendAll()">Send all</button>
+          <button id="configurebutton" onclick="UI.showConfigure()">Account</button>
+          <a href="http://hacks.mozilla.org/2010/02/an-html5-offline-image-editor-and-uploader-application" target="_">About</a>
+        </div>
+        <div id="status"><p/></div>
+        <div id="veil"/>
+      </div>
+    </div>
+    <div id="footer">
+      <p>Demo by <a href="http://twitter.com/paulrouget">Paul Rouget</a></p>
+      <p>For more information see <a href="http://hacks.mozilla.org/2010/02/an-html5-offline-image-editor-and-uploader-application">hacks.mozilla.org</a></p>
+      <p>Image hosting service:</p>
+      <a href="http://twitpic.com"><img src="img/twitpic.png"/></a>
+    </div>
+  </body>
+</html>
+

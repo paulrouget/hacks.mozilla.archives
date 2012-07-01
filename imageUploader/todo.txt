@@ -1,0 +1,39 @@
+* orientation
+
+Features:
+* crossXHR
+* multiple input/output
+* Edit before upload
+* Offline (localStorage + manifest)
+* DnD
+* Fennec
+
+
+The key features:
+* Offline:
+    - the application work offline (not on demos.h.m.o *yet*)
+    - if you close Firefox or your tab, images are not lost
+* Multiple input/output
+    - you can open several files at the same time (mutiple input file)
+      or draganddrop them
+    - you can send all the images at the same time
+* Drag'n Drop
+    - You can drop the files
+    - you can inlay a remote image (from the same domain) or a file from
+      your desktop via Drag'n Drop
+* Edit before send
+    - you can do some operations before sending the files
+      (resize, crop, colors, face detector (workers), flip, rotate...)
+    - images are resized just after the drop (to do not have to manage a
+      huge file)
+* Cross-XHR
+    - The files (the canvas actually) are upload directly to twitpic, no
+      server side code involved
+
+I'm also working on a version for Fennec.
+I can say that it's going to work (I have a version here working).
+But some features are disabled (face detector and all the DnD stuff).
+It supports Orientation events (the design change if you turn you phone).
+I use mediaQueries.
+
+

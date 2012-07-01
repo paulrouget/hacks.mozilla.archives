@@ -1,0 +1,146 @@
+#trends {
+    background-color: rgb(0, 34, 51);
+    padding-top: 20px;
+    padding-right: 25px;
+    padding-bottom: 20px;
+    padding-left: 25px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    -moz-border-radius: 10px;
+}
+#trends div {
+    overflow-x: hidden;
+    overflow-y: hidden;
+    width: 705px;
+    padding-left-value: 25px;
+    padding-left-ltr-source: physical;
+    padding-left-rtl-source: physical;
+    height: 1.9em;
+}
+#trends .current {
+    background-color: transparent;
+    background-image: url("http://s.twimg.com/a/1258070043/images/icon-clock.gif");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: left center;
+    -moz-background-clip: border;
+    -moz-background-origin: padding;
+    -moz-background-size: auto auto;
+    margin-bottom: 7px;
+}
+#trends .daily {
+    background-color: transparent;
+    background-image: url("http://s.twimg.com/a/1258070043/images/icon-day.gif");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: left center;
+    -moz-background-clip: border;
+    -moz-background-origin: padding;
+    -moz-background-size: auto auto;
+    margin-bottom: 4px;
+}
+#trends .weekly {
+    background-color: transparent;
+    background-image: url("http://s.twimg.com/a/1258070043/images/icon-week.gif");
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-position: left center;
+    -moz-background-clip: border;
+    -moz-background-origin: padding;
+    -moz-background-size: auto auto;
+}
+
+#trends ul {
+    margin-top: 0pt;
+    margin-right-value: 0pt;
+    margin-bottom: 0pt;
+    margin-left-value: 0pt;
+    margin-left-ltr-source: physical;
+    margin-left-rtl-source: physical;
+    margin-right-ltr-source: physical;
+    margin-right-rtl-source: physical;
+    padding-top: 0pt;
+    padding-right-value: 0pt;
+    padding-bottom: 0pt;
+    padding-left-value: 0pt;
+    padding-left-ltr-source: physical;
+    padding-left-rtl-source: physical;
+    padding-right-ltr-source: physical;
+    padding-right-rtl-source: physical;
+    list-style-type: none;
+    list-style-image: none;
+    list-style-position: outside;
+    white-space: nowrap;
+    width: 870px;
+    line-height: 2;
+}
+#trends .current ul {
+    line-height: 2.1;
+}
+#trends a:link, #trends a:visited {
+    color: rgb(34, 119, 187);
+    text-decoration: none;
+}
+#trends li {
+    margin-top: 0pt;
+    margin-right-value: 0pt;
+    margin-bottom: 0pt;
+    margin-left-value: 0pt;
+    margin-left-ltr-source: physical;
+    margin-left-rtl-source: physical;
+    margin-right-ltr-source: physical;
+    margin-right-rtl-source: physical;
+    float: left;
+    display: inline-block;
+}
+
+#trends a {
+    display: inline-block;
+    padding-top: 0pt;
+    padding-right: 15px;
+    padding-bottom: 0pt;
+    padding-left-value: 0pt;
+    color: rgb(170, 221, 255);
+    outline-width: medium;
+    outline-style: none;
+    outline-color: -moz-use-text-color;
+}
+
+#trends .current a {
+    font-family: Helvetica,Arial,Sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: normal;
+    font-size-adjust: none;
+    font-stretch: normal;
+    -x-system-font: none;
+    color: rgb(170, 221, 255);
+}
+
+#trends .daily a {
+    font-family: Helvetica,Arial,Sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: normal;
+    font-size-adjust: none;
+    font-stretch: normal;
+    -x-system-font: none;
+    color: rgb(136, 204, 238);
+}
+#trends .weekly a {
+    font-family: "Lucida Grande",Arial,Sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: normal;
+    font-size: 11px;
+    line-height: normal;
+    font-size-adjust: none;
+    font-stretch: normal;
+    -x-system-font: none;
+    color: rgb(102, 170, 204);
+}
+

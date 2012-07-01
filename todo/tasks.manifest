@@ -1,0 +1,16 @@
+CACHE MANIFEST
+
+# v2.3
+index.html
+js/tasksmanager.js
+js/tasksserver.js
+js/taskseffects.js
+css/main.css
+images/close-40.png
+images/add.png
+images/sync.png
+images/no-sync.png
+images/buttondark-default-64.png
+
+NETWORK:
+php/tasks.php

@@ -1,0 +1,18 @@
+#bag {
+    width: 600px;
+    min-height: 40px;
+    margin-bottom: 15px;
+}
+
+#bag > * {
+    color: white;
+    background: black;
+    display: block;
+    margin: auto;
+    max-width: 550px;
+    border: 1px solid white;
+    -moz-box-shadow: 0 0 12px 5px black;
+    padding: 10px;
+    margin-top: 20px;
+}
+

@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="../../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../../resources/styles/hacks.css" type="text/css" media="screen"/>
+
+        <script>
+        // Box 1
+        function enable_linear_gradient(id) {
+            var box = document.getElementById(id);
+            box.removeAttribute("radial");
+            box.setAttribute("linear", true);
+        }
+
+        function enable_radial_gradient(id) {
+            var box = document.getElementById(id);
+            box.removeAttribute("linear");
+            box.setAttribute("radial", true);
+        }
+
+        function disable_gradient(id) {
+            var box = document.getElementById(id);
+            box.removeAttribute("linear");
+            box.removeAttribute("radial");
+        }
+
+        </script>
+        <style>
+            ul {
+                list-style-type: none;
+                list-style-image: none
+            }
+            .box {
+                -moz-border-radius: 10px;
+                -moz-box-shadow: 0 0 12px 1px rgba(205, 205, 205, 1);
+                border: 1px solid black;
+                padding: 10px;
+            }
+            .box:hover {
+                -moz-box-shadow: 0 0 12px 5px rgba(205, 205, 205, 1);
+            }
+
+            fieldset {
+                border: 0px;
+            }
+            fieldset * {
+                font-family: monospace;
+            }
+            .toolbox {
+                border-top: none;
+            }
+
+            /* Box 1: Gradients */
+            #box_gradient[linear="true"] {
+                background-image: -moz-linear-gradient(bottom, black, rgba(0, 47, 94, 0.2), white);
+            }
+
+            #box_gradient[radial="true"] {
+                background-image: -moz-radial-gradient(50% 20%, white, rgba(0, 0, 0, 0.2) 75%);
+            }
+        </style>
+        <title>CSS Gradient &amp; Firefox 3.6</title>
+    </head>
+
+    <body>
+
+
+
+        <a href="http://hacks.mozilla.org" id="hackstitle">
+            <h1>hacks.mozilla.org</h1>
+        </a>
+
+
+        <div id="demo">
+            <h1 id="demotitle">CSS Gradients &amp; Firefox 3.6</h1>
+            <div id="intro">
+                <p><a href="http://hacks.mozilla.org/2009/11/css-gradients-firefox-36/">See related blog post on hacks.mozilla.org.</a></p>
+                <p>This demo is interactive. Just check/uncheck the boxes with the style settings to see them in action.</p>
+            </div>
+            <div class="box" id="box_gradient" linear="true" anchor="">
+                <h2>Gradients</h2>
+                <p>
+                    In this div, we use <em>CSS Gradient</em> as background.
+                    There are two kinds of gradients:
+                    <em>Linear Gradients</em> and <em>Radial Gradients</em>.
+                </p>
+                <p>A linear gradient:</p>
+                <pre>
+background-image: -moz-linear-gradient(bottom, black, rgba(0, 47, 94, 0.2), white);
+                </pre>
+                <p>A radial gradient:</p>
+                <pre>
+background-image: -moz-radial-gradient(50% 20%, white, rgba(0, 0, 0, 0.2) 75%);
+                </pre>
+                <p>
+                    See MDC for more details:
+                    <a type="mdc"
+                        href="https://developer.mozilla.org/en/CSS/-moz-linear-gradient">
+                        linear-gradient
+                     </a>, 
+                     <a type="mdc"
+                         href="https://developer.mozilla.org/en/CSS/-moz-radial-gradient">
+                         radial-gradient
+                     </a>.
+                </p>
+
+                <p class="toolbox">
+                    <label>
+                        <input type="radio" name="gradients" checked="true" onclick="enable_linear_gradient('box_gradient');"/>
+                        Linear gradient
+                    </label>
+                    <label>
+                        <input type="radio" name="gradients" onclick="enable_radial_gradient('box_gradient');"/>
+                        Radial gradient
+                    </label>
+                    <label>
+                        <input type="radio" name="gradients" onclick="disable_gradient('box_gradient');"/>
+                        No gradient
+                    </label>
+                </p>
+            </div>
+	</div>
+        <div id="hackspromo">
+            <a href="http://www.twitter.com/mozhacks">
+                <img src="../../resources/images/logos/twittericon.png"
+                width="60" height="60" alt="@mozhacks on Twitter"
+                longdesc="http://twitter.com/mozhacks"/>
+            </a>
+            <a href="http://hacks.mozilla.org">
+                <img src="../../resources/images/logos/feed.png"
+                width="60" height="60" alt="Hacks Blog"
+                longdesc="http://hacks.mozilla.org" />
+            </a>
+            <a href="http://www.youtube.com/mozhacks">
+                <img src="../../resources/images/logos/youtube.png"
+                width="60" height="60" alt="Hacks Videos"
+                longdesc="http://www.youtube.com/mozhacks" />
+            </a>
+            <p id="download">To take full advantage of the demo, you need to run a modern browser. Try the latest beta of Firefox 3.6 (<a href="http://www.mozilla.com/firefox/all-rc.html">download</a>).</p>
+            <p class="author">Demo by <a href="http://twitter.com/paulrouget">Paul Rouget</a>.</p>
+        </div>
+
+    </body>
+</html>
+

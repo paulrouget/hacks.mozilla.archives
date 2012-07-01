@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../resources/styles/hacks.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="twitter.css" type="text/css" media="screen"/>
+
+
+        <script>
+            function enable_pe(checked, id) {
+                document.getElementById(id).setAttribute("pe", checked);
+            }
+        </script>
+        <style>
+            #intro {
+                text-align: justify;
+            }
+
+            #demo {
+                max-width: 800px;
+            }
+            .box {
+                width: 750px;
+            }
+
+            .boxContainer {
+                position: relative;
+                height: 150px;
+            }
+
+            .toolbox {
+                border-top: 0px;
+            }
+
+            .layer1 {
+                background-color: rgb(221, 238, 246);
+                position: absolute;
+                padding: 10px;
+            }
+            .layer2 {
+                top: 10px;
+                right: -15px;
+                width: 155px;
+                height: 120px;
+                position: absolute;
+                background: -moz-linear-gradient(right, rgba(0, 34, 51, 1) 40px,
+                                                        rgba(0, 34, 51, 0));
+                -moz-border-radius-topright: 10px;
+                -moz-border-radius-bottomright: 10px;
+            }
+            .layer2[pe="true"] {
+                pointer-events: none;
+            }
+
+            #trends a:hover {
+                color: red;
+            }
+
+        </style>
+        <title>CSS pointer-events &amp; Firefox 3.6</title>
+    </head>
+
+    <body>
+
+        <a href="http://hacks.mozilla.org" id="hackstitle">
+            <h1>hacks.mozilla.org</h1>
+        </a>
+
+
+        <div id="demo">
+            <h1 id="demotitle">CSS pointer-events &amp; Firefox 3.6</h1>
+            <div id="intro">
+                <p><a href="http://hacks.mozilla.org/2009/12/pointer-events-for-html-in-firefox-3-6">See related blog post on hacks.mozilla.org.</a></p>
+                <p>
+                This blue box is a replica of the tag list from <a href="http://twitter.com">twitter.com</a> homepage.
+                As you can see, there is a fade on the right part of the box. It's done via a div which is on top of the list, with a CSS Gradient Background.
+                The tags are links (&lt;a/&gt;), so clickable.
+                But the tags under the fade are not, because the div on top "stops" the mouse events (you don't click on a link you click
+                on the fade box).
+                </p>
+                <p>
+                To avoid this behavior and have the tags clickable, you can make the fade div "click-through", via the <code>pointer-events: none;</code> CSS
+                property. Enable this behavior by clicking the checkbox.
+                </p>
+            </div>
+            <div class="box">
+                <div class="boxContainer">
+                    <div class="layer1">
+                        <!-- Twitter.com copy/paste -->
+                        <div id="trends">
+                            <div class="current" title="Popular topics right now">
+                                <ul>
+                                    <li><a href="http://twitter.com/search?q=H%26M" class="search_link" name="H&amp;M" rel="nofollow" title="H&amp;M">H&amp;M</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Google+Wave%22" class="search_link" name="&quot;Google Wave&quot;" rel="nofollow" title="&quot;Google Wave&quot;">Google Wave</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23thingshaterssay" class="search_link" name="#thingshaterssay" rel="nofollow" title="#thingshaterssay">#thingshaterssay</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23ToiletBandnames" class="search_link" name="#ToiletBandnames" rel="nofollow" title="#ToiletBandnames">#ToiletBandnames</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23PaulClarke" class="search_link" name="#PaulClarke" rel="nofollow" title="#PaulClarke">#PaulClarke</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Jimmy+Choo%22" class="search_link" name="&quot;Jimmy Choo&quot;" rel="nofollow" title="&quot;Jimmy Choo&quot;">Jimmy Choo</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23openwebawards" class="search_link" name="#openwebawards" rel="nofollow" title="#openwebawards">#openwebawards</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22New+Moon%22" class="search_link" name="&quot;New Moon&quot;" rel="nofollow" title="&quot;New Moon&quot;">New Moon</a></li>
+                                    <li><a href="http://twitter.com/search?q=JLS" class="search_link" name="JLS" rel="nofollow" title="JLS">JLS</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Modern+Warfare+2%22" class="search_link" name="&quot;Modern Warfare 2&quot;" rel="nofollow" title="&quot;Modern Warfare 2&quot;">Modern Warfare 2</a></li>
+                                </ul>
+                            </div>
+                            <div class="daily" title="Popular topics today">
+                                <ul>
+                                    <li><a href="http://twitter.com/search?q=%23youknowyouruglyif" class="search_link" name="#youknowyouruglyif" rel="nofollow" title="#youknowyouruglyif">#youknowyouruglyif</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Google+Wave%22+OR+Wave" class="search_link" name="&quot;Google Wave&quot; OR Wave" rel="nofollow" title="&quot;Google Wave&quot; OR Wave">Google Wave</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Modern+Warfare+2%22" class="search_link" name="&quot;Modern Warfare 2&quot;" rel="nofollow" title="&quot;Modern Warfare 2&quot;">Modern Warfare 2</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23ARealWife" class="search_link" name="#ARealWife" rel="nofollow" title="#ARealWife">#ARealWife</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Follow+Friday%22" class="search_link" name="&quot;Follow Friday&quot;" rel="nofollow" title="&quot;Follow Friday&quot;">Follow Friday</a></li>
+                                    <li><a href="http://twitter.com/search?q=TGIF" class="search_link" name="TGIF" rel="nofollow" title="TGIF">TGIF</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23donttrytoholla" class="search_link" name="#donttrytoholla" rel="nofollow" title="#donttrytoholla">#donttrytoholla</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22New+Moon%22+OR+Moon" class="search_link" name="&quot;New Moon&quot; OR Moon" rel="nofollow" title="&quot;New Moon&quot; OR Moon">New Moon</a></li>
+                                    <li><a href="http://twitter.com/search?q=MW2" class="search_link" name="MW2" rel="nofollow" title="MW2">MW2</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23wecoolandallbut" class="search_link" name="#wecoolandallbut" rel="nofollow" title="#wecoolandallbut">#wecoolandallbut</a></li>
+                                    <li><a href="http://twitter.com/search?q=%2305starbarbie" class="search_link" name="#05starbarbie" rel="nofollow" title="#05starbarbie">#05starbarbie</a></li>
+                                    <li><a href="http://twitter.com/search?q=NASA" class="search_link" name="NASA" rel="nofollow" title="NASA">NASA</a></li>
+                                </ul>
+                            </div>
+                            <div class="weekly" title="Popular topics this week">
+                                <ul>
+                                    <li><a href="http://twitter.com/search?q=%22Modern+Warfare+2%22" class="search_link" name="&quot;Modern Warfare 2&quot;" rel="nofollow" title="&quot;Modern Warfare 2&quot;">Modern Warfare 2</a></li>
+                                    <li><a href="http://twitter.com/search?q=Jedward" class="search_link" name="Jedward" rel="nofollow" title="Jedward">Jedward</a></li>
+                                    <li><a href="http://twitter.com/search?q=%22Fort+Hood%22+OR+Hood" class="search_link" name="&quot;Fort Hood&quot; OR Hood" rel="nofollow" title="&quot;Fort Hood&quot; OR Hood">Fort Hood</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23rihannasforehead" class="search_link" name="#rihannasforehead" rel="nofollow" title="#rihannasforehead">#rihannasforehead</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23bestfeeling" class="search_link" name="#bestfeeling" rel="nofollow" title="#bestfeeling">#bestfeeling</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23MusicMonday" class="search_link" name="#MusicMonday" rel="nofollow" title="#MusicMonday">#MusicMonday</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23worstfeeling" class="search_link" name="#worstfeeling" rel="nofollow" title="#worstfeeling">#worstfeeling</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23wecoolandallbut" class="search_link" name="#wecoolandallbut" rel="nofollow" title="#wecoolandallbut">#wecoolandallbut</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23donttrytoholla" class="search_link" name="#donttrytoholla" rel="nofollow" title="#donttrytoholla">#donttrytoholla</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23celebrityperfumes" class="search_link" name="#celebrityperfumes" rel="nofollow" title="#celebrityperfumes">#celebrityperfumes</a></li>
+                                    <li><a href="http://twitter.com/search?q=%23UnFollowMe" class="search_link" name="#UnFollowMe" rel="nofollow" title="#UnFollowMe">#UnFollowMe</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Twitter.com copy/paste -->
+                    <div class="layer2" id="layerGradient"></div>
+                </div>
+                <p class="toolbox">
+                    <label>
+                        <input type="checkbox" onclick="enable_pe(this.checked, 'layerGradient');"/>
+                        pointer-events: none;
+                    </label>
+                </p>
+
+            </div>
+        </div>
+        <div id="hackspromo">
+            <a href="http://www.twitter.com/mozhacks">
+                <img src="../resources/images/logos/twittericon.png"
+                width="60" height="60" alt="@mozhacks on Twitter"
+                longdesc="http://twitter.com/mozhacks"/>
+            </a>
+            <a href="http://hacks.mozilla.org">
+                <img src="../resources/images/logos/feed.png"
+                width="60" height="60" alt="Hacks Blog"
+                longdesc="http://hacks.mozilla.org" />
+            </a>
+            <a href="http://www.youtube.com/mozhacks">
+                <img src="../resources/images/logos/youtube.png"
+                width="60" height="60" alt="Hacks Videos"
+                longdesc="http://www.youtube.com/mozhacks" />
+            </a>
+            <p id="download">To take full advantage of the demo, you need to run a modern browser. Try the latest beta of Firefox 3.6 (<a href="http://www.mozilla.com/firefox/all-rc.html">download</a>).</p>
+            <p class="author">Demo by <a href="http://twitter.com/paulrouget">Paul Rouget</a>.</p>
+        </div>
+
+    </body>
+</html>
+
+

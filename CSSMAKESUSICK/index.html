@@ -1,0 +1,869 @@
+<!--
+AUTHOR:
+    @paulrouget <paul@mozilla.com>
+
+LICENSE:
+    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+    Version 2, December 2004
+
+    Copyright (C) 2004 Sam Hocevar <sam@hocevar.net>
+
+    Everyone is permitted to copy and distribute verbatim or modified
+    copies of this license document, and changing it is allowed as long
+    as the name is changed.
+
+    DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+    TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+
+    0. You just DO WHAT THE FUCK YOU WANT TO.
+
+BLABLA:
+    This is a web page with CSS3 transitions, some WebGL,
+    and a couple of video.
+    Now, stop reading the comments, and read the code.
+-->
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--
+
+        ************************************
+        *                                  *
+        *           CSS MAGIC PART         *
+        *                                  *
+        ************************************
+
+        -->
+
+
+        <style>
+
+            * {
+                padding: 0px;
+                margin: 0px;
+            }
+            html {
+                height: 100%;
+                overflow: hidden;
+            }
+            body {
+                height: 100%;
+                background-image: -moz-radial-gradient( 50% 30% 90deg, circle, #006EA0 0%, #000 80%);
+                background-repeat: no-repeat;
+                background-color: black;
+            }
+            #frame span * {
+                height: 70px;
+                width: auto;
+            }
+
+            span {
+                margin: 10px;
+                display: inline-block;
+                -moz-transition-duration: 1s;
+                -webkit-transition-duration: 1s;
+            }
+
+            span:hover {
+                z-level: 1000;
+            }
+
+            body.moving span:hover * {
+                -moz-transition-duration: 0s;
+                -moz-box-shadow: none;
+                -webkit-transition-duration: 0s;
+                -webkit-box-shadow: none;
+            }
+
+            span * {
+                -moz-transition-duration: 1s;
+                -moz-transition-delay: 0s;
+                -webkit-transition-duration: 1s;
+                -webkit-transition-delay: 0s;
+            }
+
+            span:hover canvas {
+                -moz-transform: scale(3, 3);
+                -webkit-transform: scale(3, 3);
+            }
+
+            span video {
+                -moz-transition-duration: 2s;
+                -webkit-transition-duration: 2s;
+            }
+            span:hover video {
+                -moz-transform: scale(2, 2);
+                -webkit-transform: scale(2, 2);
+            }
+
+            span:hover img {
+                -moz-transform: scale(1.5, 1.5);
+                -webkit-transform: scale(1.5, 1.5);
+            }
+
+            video, canvas {
+                border: 4px solid white;
+            }
+            .noborder {
+                border-color: rgba(0, 0, 0, 0);
+            }
+
+            #frame {
+                width: 900px;
+                margin: auto;
+                margin-top: 50px;
+                text-align: justify;
+                -moz-transition-property: -moz-transform;
+                -moz-transition-duration: 2s;
+                -webkit-transition-property: -webkit-transform;
+                -mozwebkit: transition-duration: 2s;
+            }
+
+
+            body.loaded #splash {
+                display: none;
+            }
+            #splash {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(255, 255, 255, 0.5);
+                color: black;
+                font-size: 50px;
+                text-align: center;
+                padding-top: 200px;
+            }
+
+            #seal {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 200px;
+                height: 120px;
+                border: 4px solid black;
+                text-align: center;
+                background-color: white;
+                -moz-transition-duration: 1s;
+                -webkit-transition-duration: 1s;
+                -o-transition-duration: 1s;
+                transition-duration: 1s;
+                opacity: 0.2;
+            }
+            #seal:hover {
+                opacity: 1;
+            }
+            #seal > h1 {
+                margin: auto;
+                font-size: 20px;
+                width: 80%;
+                color: black;
+                border-bottom: 1px solid grey;
+                margin-bottom: 20px;
+            }
+            #seal a {
+                font-size: 25px;
+                text-decoration: none;
+                color: black;
+            }
+        </style>
+
+
+
+        <!--
+
+        ************************************
+        *                                  *
+        *       JAVASCRIPT FUN PART        *
+        *                                  *
+        ************************************
+
+        -->
+
+
+
+        <script>
+
+
+            var state = 0;
+
+            window.addEventListener("load", function () {
+                addClass(document.body, "loaded");
+                var frame = document.getElementById("frame");
+                var imgs = document.querySelectorAll("#frame span *");
+                for (var i = 0, ii = imgs.length; i < ii; i++) {
+                    imgs[i].addEventListener("click", imageClicked, true);
+                }
+
+                window.addEventListener("mousemove", mouseMove, true);
+                frame.addEventListener("click", frameClicked, true);
+
+                var zX, zY, zoomed = false;
+                var canvasStarted = false;
+                var canvasShowingVideo = false;
+                function imageClicked(e) {
+                    var x = e.clientX - frame.offsetLeft + window.pageXOffset;
+                    var y = e.clientY - frame.offsetTop + window.pageYOffset;
+                    if (!zoomed) {
+                        addClass(document.body, "moving");
+                        frame.style.MozTransformOrigin = x + "px " + y + "px";
+                        frame.style.MozTransform = "scale(4, 4) rotate(350deg)";
+                        frame.style.WebkitTransformOrigin = x + "px " + y + "px";
+                        frame.style.WebkitTransform = "scale(4, 4) rotate(350deg)";
+                        zX = x;
+                        zY = y;
+                        setTimeout(function() {
+                            frame.style.MozTransitionDuration = "0s";
+                            frame.style.WebkitTransitionDuration = "0s";
+                            zoomed = true;
+                            removeClass(document.body, "moving");
+                        }, 2000);
+                        } else {
+                        if (e.target.tagName == "VIDEO") {
+                            if (e.target.paused) {
+                                e.target.play();
+                                addClass(e.target, "noborder");
+                                } else {
+                                unzoom();
+                                return;
+                            }
+                            return;
+                        }
+                        if (e.target.tagName == "CANVAS") {
+                            if (!canvasStarted) {
+                                canvasStarted = true;
+                                webGLStart();
+                                return;
+                            }
+                            if (!canvasShowingVideo) {
+                                canvasShowingVideo = true;
+                                document.getElementById("texture").play();
+                                return;
+                            }
+                            unzoom();
+                            return;
+                        }
+                        if (e.target.tagName == "IMG") {
+                            unzoom();
+                            return;
+                        }
+                    }
+                }
+
+                function frameClicked(e) {
+                    if (e.originalTarget.tagName == "DIV") {
+                        unzoom();
+                    }
+                }
+                function unzoom() {
+                    if (zoomed) {
+                        zoomed = false;
+                        frame.style.MozTransitionDuration = "2s";
+                        frame.style.MozTransform = "scale(1, 1) rotate(0deg)";
+                        frame.style.WebkitTransitionDuration = "2s";
+                        frame.style.WebkitTransform = "scale(1, 1) rotate(0deg)";
+                    }
+                }
+
+                function mouseMove(e) {
+                    if (zoomed) {
+                        var x = e.clientX - frame.offsetLeft + window.pageXOffset;
+                        var y = e.clientY - frame.offsetTop + window.pageYOffset;
+                        var x = zX - x;
+                        var y = zY - y;
+                        x *= 3;
+                        y *= 3;
+                        frame.style.MozTransform = "rotate(350deg) translate(" + x + "px, " + y + "px) scale(4, 4)";
+                        frame.style.WebkitTransform = "rotate(350deg) translate(" + x + "px, " + y + "px) scale(4, 4)";
+                    }
+                }
+
+
+
+            }, true);
+        </script>
+    </head>
+    <body>
+
+        <!--
+
+        ************************************
+        *                                  *
+        *         HTML BORING PART         *
+        *                                  *
+        ************************************
+
+        -->
+
+
+        <div id="splash">Loading images...</div>
+        <div id="seal"><h1>More details on</h1><p><a href="http://hacks.mozilla.org/2010/07/firefox4-beta2/">hacks.mozilla.org</a></p></div>
+
+        <div id="frame">
+            <span><img src="photos/4768054512_325e3f4f74_b.jpg"></span>
+            <span><img src="photos/2378682797_b125b0cec6_b.jpg"></span>
+            <span><img src="photos/4772270818_cdcde3c5a4_b.jpg"></span>
+            <span><img src="photos/4096180081_c1e4903bd9_b.jpg"></span>
+            <span><img src="photos/4772270148_92cec76ae9_b.jpg"></span>
+            <span><img src="photos/4772270148_92cec76ae9_b.jpg.1"></span>
+            <span><img src="photos/4767414327_b14618a7da_b.jpg"></span>
+            <span><img src="photos/2379541098_bc3e26263d_b.jpg"></span>
+            <span><img src="photos/4772269320_e417360bd1_b.jpg"></span>
+            <span><img src="photos/4772060426_ed1e29d404_b.jpg"></span>
+            <span><img src="photos/4771437583_95a02a94a7_b.jpg"></span>
+            <span><img src="photos/4771629819_306bda2df3_b.jpg"></span>
+            <span><img src="photos/4771407063_bbfd2d04ed_b.jpg"></span>
+            <span><img src="photos/4768959278_8770315f11_b.jpg"></span>
+            <span><img src="photos/4771628703_611cde3fd0_b.jpg"></span>
+            <span><video autobuffer onended="this.play()" src="video.webm"></video></span>
+            <span><img src="photos/4767449435_04eb1f91a1_b.jpg"></span>
+            <span><img src="photos/4770721886_8c6080e4e0_b.jpg"></span>
+            <span><img src="photos/4770741642_15f60138bd_b.jpg"></span>
+            <span><video autobuffer onended="this.play()" src="video2.ogv"></video></span>
+            <span><img src="photos/4767254068_da38d41884_b.jpg"></span>
+            <span><img src="photos/4772268904_c958170ea3_b.jpg"></span>
+            <span><img src="photos/4772269620_2d392cbfac_b.jpg"></span>
+            <span><img src="photos/4773875384_538fd867a2.jpg"></span>
+            <span><img src="photos/20100706_024.jpg"></span>
+            <span><img src="photos/20100706_022.jpg"></span>
+            <span><img src="photos/4773914802_edf6281908.jpg"></span>
+            <span><img src="photos/IMG_9656.jpg"></span>
+            <span><img src="photos/20100708_019.jpg"></span>
+            <span><img src="photos/20100708_022.jpg"></span>
+            <span><img src="photos/20100706_025.jpg"></span>
+            <span><img src="photos/20100708_006.jpg"></span>
+            <span><canvas width="500" height="500" id="canvas"></canvas></span>
+            <span><img src="photos/20100706_015.jpg"></span>
+            <span><img src="photos/IMG_9654.jpg"></span>
+            <span><img src="photos/20100706_016.jpg"></span>
+            <span><img src="photos/IMG_9684.jpg"></span>
+            <span><img src="photos/IMG_9682.jpg"></span>
+            <span><img src="photos/20100706_027.jpg"></span>
+            <span><img src="photos/20100708_003.jpg"></span>
+            <span><img src="photos/IMG_9686.jpg"></span>
+            <span><img src="photos/20100708_007.jpg"></span>
+            <span><img src="photos/IMG_9657.jpg"></span>
+            <span><img src="photos/IMG_9693.jpg"></span>
+            <span><img src="photos/IMG_9702.jpg"></span>
+            <span><img src="photos/IMG_9655.jpg"></span>
+            <span><img src="photos/20100706_019.jpg"></span>
+            <span><img src="photos/IMG_9697.jpg"></span>
+            <span><img src="photos/IMG_9707.jpg"></span>
+            <span><img src="photos/20100706_028.jpg"></span>
+            <span><img src="photos/IMG_9658.jpg"></span>
+            <span><img src="photos/IMG_9683.jpg"></span>
+            <span><img src="photos/IMG_9701.jpg"></span>
+            <span><img src="photos/IMG_9685.jpg"></span>
+            <span><img src="photos/20100708_020.jpg"></span>
+            <span><img src="photos/20100706_026.jpg"></span>
+            <span><img src="photos/20100708_021.jpg"></span>
+            <span><img src="photos/IMG_9696.jpg"></span>
+            <span><img src="photos/IMG_9653.jpg"></span>
+            <span><img src="photos/IMG_9659.jpg"></span>
+            <span><img src="photos/IMG_9700.jpg"></span>
+            <span><img src="photos/IMG_9706.jpg"></span>
+            <span><img src="photos/IMG_9652.jpg"></span>
+            <span><img src="photos/IMG_9705.jpg"></span>
+            <span><img src="photos/IMG_9698.jpg"></span>
+            <span><img src="photos/201007~8.jpg"></span>
+            <span><img src="photos/IMG_9692.jpg"></span>
+            <span><img src="photos/20100707_001.jpg"></span>
+            <span><img src="photos/IMG_9691.jpg"></span>
+            <span><img src="photos/IMG_9695.jpg"></span>
+            <span><img src="photos/IMG_9694.jpg"></span>
+            <span><img src="photos/IMG_9663.jpg"></span>
+            <span><img src="photos/IMG_9665.jpg"></span>
+            <span><img src="photos/IMG_9677.jpg"></span>
+            <span><img src="photos/IMG_9664.jpg"></span>
+            <span><img src="photos/IMG_9678.jpg"></span>
+            <span><img src="photos/IMG_9670.jpg"></span>
+            <span><img src="photos/IMG_9669.jpg"></span>
+            <span><img src="photos/IMG_9671.jpg"></span>
+            <span><img src="photos/IMG_9675.jpg"></span>
+        </div>
+
+        <video id="texture" autobuffer style="display: none;" ontimeupdate="insertVideo(this);" src="robots.ogv" onended="this.play();"></video>
+
+        <!--
+
+        ************************************
+        *                                  *
+        *   SOME WEBGL I DONT UNDERSTAND   *
+        *                                  *
+        ************************************
+
+        -->
+
+
+
+
+
+
+        <script type="text/javascript" src="sylvester.js"></script>
+        <script type="text/javascript" src="glUtils.js"></script>
+
+        <script id="shader-fs" type="x-shader/x-fragment">
+            #ifdef GL_ES
+            precision mediump float;
+            #endif
+
+            varying vec2 vTextureCoord;
+
+            uniform sampler2D uSampler;
+
+            void main(void) {
+                gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+            }
+        </script>
+
+        <script id="shader-vs" type="x-shader/x-vertex">
+
+            #ifdef GL_ES
+            precision mediump float;
+            #endif
+
+            attribute vec3 aVertexPosition;
+            attribute vec2 aTextureCoord;
+
+            uniform mat4 uMVMatrix;
+            uniform mat4 uPMatrix;
+
+            uniform vec3 uDummyForN900Workaround;
+
+            varying vec2 vTextureCoord;
+            varying vec3 vDummyForN900Workaround;
+
+
+            void main(void) {
+                gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+                vTextureCoord = aTextureCoord;
+                vDummyForN900Workaround = uDummyForN900Workaround;
+            }
+        </script>
+
+
+        <script type="text/javascript">
+
+            var gl;
+            function initGL(canvas) {
+                try {
+                    gl = canvas.getContext("experimental-webgl");
+                    gl.viewport(0, 0, canvas.width, canvas.height);
+                } catch(e) {
+                }
+                if (!gl) {
+                    alert("Could not initialise WebGL, sorry :-(");
+                }
+            }
+
+
+            function getShader(gl, id) {
+                var shaderScript = document.getElementById(id);
+                if (!shaderScript) {
+                    return null;
+                }
+
+                var str = "";
+                var k = shaderScript.firstChild;
+                while (k) {
+                    if (k.nodeType == 3) {
+                        str += k.textContent;
+                    }
+                    k = k.nextSibling;
+                }
+
+                var shader;
+                if (shaderScript.type == "x-shader/x-fragment") {
+                    shader = gl.createShader(gl.FRAGMENT_SHADER);
+                } else if (shaderScript.type == "x-shader/x-vertex") {
+                    shader = gl.createShader(gl.VERTEX_SHADER);
+                } else {
+                    return null;
+                }
+
+                gl.shaderSource(shader, str);
+                gl.compileShader(shader);
+
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    alert(gl.getShaderInfoLog(shader));
+                    return null;
+                }
+
+                return shader;
+            }
+
+
+            var shaderProgram;
+            function initShaders() {
+                var fragmentShader = getShader(gl, "shader-fs");
+                var vertexShader = getShader(gl, "shader-vs");
+
+                shaderProgram = gl.createProgram();
+                gl.attachShader(shaderProgram, vertexShader);
+                gl.attachShader(shaderProgram, fragmentShader);
+                gl.linkProgram(shaderProgram);
+
+                if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                    alert("Could not initialise shaderswebgl-logo.gif");
+                }
+
+                gl.useProgram(shaderProgram);
+
+                shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+                gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
+
+                shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+                gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
+                shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+                shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
+                shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
+            }
+
+
+            function handleLoadedTexture(texture) {
+                gl.bindTexture(gl.TEXTURE_2D, texture);
+                gl.texImage2D(gl.TEXTURE_2D, 0, texture.image, true);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+                gl.bindTexture(gl.TEXTURE_2D, null);
+            }
+
+
+            var neheTexture;
+            function initTexture() {
+                neheTexture = gl.createTexture();
+                neheTexture.image = new Image();
+                neheTexture.image.onload = function() {
+                    handleLoadedTexture(neheTexture)
+                }
+
+                neheTexture.image.src = "webgl-logo.gif";
+            }
+
+            function insertVideo(video) {
+                neheTexture.image = video;
+                handleLoadedTexture(neheTexture)
+            }
+
+
+
+            var mvMatrix;
+            var mvMatrixStack = [];
+
+            function mvPushMatrix(m) {
+                if (m) {
+                    mvMatrixStack.push(m.dup());
+                    mvMatrix = m.dup();
+                } else {
+                    mvMatrixStack.push(mvMatrix.dup());
+                }
+            }
+
+            function mvPopMatrix() {
+                if (mvMatrixStack.length == 0) {
+                    throw "Invalid popMatrix!";
+                }
+                mvMatrix = mvMatrixStack.pop();
+                return mvMatrix;
+            }
+
+            function loadIdentity() {
+                mvMatrix = Matrix.I(4);
+            }
+
+
+            function multMatrix(m) {
+                mvMatrix = mvMatrix.x(m);
+            }
+
+            function mvTranslate(v) {
+                var m = Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4();
+                multMatrix(m);
+            }
+
+            function mvRotate(ang, v) {
+                var arad = ang * Math.PI / 180.0;
+                var m = Matrix.Rotation(arad, $V([v[0], v[1], v[2]])).ensure4x4();
+                multMatrix(m);
+            }
+
+            var pMatrix;
+            function perspective(fovy, aspect, znear, zfar) {
+                pMatrix = makePerspective(fovy, aspect, znear, zfar);
+            }
+
+
+            function setMatrixUniforms() {
+                gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, new WebGLFloatArray(pMatrix.flatten()));
+                gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, new WebGLFloatArray(mvMatrix.flatten()));
+            }
+
+
+            var cubeVertexPositionBuffer;
+            var cubeVertexTextureCoordBuffer;
+            var cubeVertexIndexBuffer;
+            function initBuffers() {
+                cubeVertexPositionBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+                vertices = [
+                    // Front face
+                    -1.0, -1.0,  1.0,
+                    1.0, -1.0,  1.0,
+                    1.0,  1.0,  1.0,
+                    -1.0,  1.0,  1.0,
+
+                    // Back face
+                    -1.0, -1.0, -1.0,
+                    -1.0,  1.0, -1.0,
+                    1.0,  1.0, -1.0,
+                    1.0, -1.0, -1.0,
+
+                    // Top face
+                    -1.0,  1.0, -1.0,
+                    -1.0,  1.0,  1.0,
+                    1.0,  1.0,  1.0,
+                    1.0,  1.0, -1.0,
+
+                    // Bottom face
+                    -1.0, -1.0, -1.0,
+                    1.0, -1.0, -1.0,
+                    1.0, -1.0,  1.0,
+                    -1.0, -1.0,  1.0,
+
+                    // Right face
+                    1.0, -1.0, -1.0,
+                    1.0,  1.0, -1.0,
+                    1.0,  1.0,  1.0,
+                    1.0, -1.0,  1.0,
+
+                    // Left face
+                    -1.0, -1.0, -1.0,
+                    -1.0, -1.0,  1.0,
+                    -1.0,  1.0,  1.0,
+                    -1.0,  1.0, -1.0,
+                    ];
+                gl.bufferData(gl.ARRAY_BUFFER, new WebGLFloatArray(vertices), gl.STATIC_DRAW);
+                cubeVertexPositionBuffer.itemSize = 3;
+                cubeVertexPositionBuffer.numItems = 24;
+
+                cubeVertexTextureCoordBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+                var textureCoords = [
+                    // Front face
+                    0.0, 0.0,
+                    1.0, 0.0,
+                    1.0, 1.0,
+                    0.0, 1.0,
+
+                    // Back face
+                    1.0, 0.0,
+                    1.0, 1.0,
+                    0.0, 1.0,
+                    0.0, 0.0,
+
+                    // Top face
+                    0.0, 1.0,
+                    0.0, 0.0,
+                    1.0, 0.0,
+                    1.0, 1.0,
+
+                    // Bottom face
+                    1.0, 1.0,
+                    0.0, 1.0,
+                    0.0, 0.0,
+                    1.0, 0.0,
+
+                    // Right face
+                    1.0, 0.0,
+                    1.0, 1.0,
+                    0.0, 1.0,
+                    0.0, 0.0,
+
+                    // Left face
+                    0.0, 0.0,
+                    1.0, 0.0,
+                    1.0, 1.0,
+                    0.0, 1.0,
+                    ];
+                gl.bufferData(gl.ARRAY_BUFFER, new WebGLFloatArray(textureCoords), gl.STATIC_DRAW);
+                cubeVertexTextureCoordBuffer.itemSize = 2;
+                cubeVertexTextureCoordBuffer.numItems = 24;
+
+                cubeVertexIndexBuffer = gl.createBuffer();
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
+                var cubeVertexIndices = [
+                    0, 1, 2,      0, 2, 3,    // Front face
+                    4, 5, 6,      4, 6, 7,    // Back face
+                    8, 9, 10,     8, 10, 11,  // Top face
+                    12, 13, 14,   12, 14, 15, // Bottom face
+                    16, 17, 18,   16, 18, 19, // Right face
+                    20, 21, 22,   20, 22, 23  // Left face
+                        ]
+                        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new WebGLUnsignedShortArray(cubeVertexIndices), gl.STATIC_DRAW);
+                cubeVertexIndexBuffer.itemSize = 1;
+                cubeVertexIndexBuffer.numItems = 36;
+            }
+
+
+            var xRot = 0;
+            var yRot = 0;
+            var zRot = 0;
+                function drawScene() {
+                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+
+                        perspective(45, 1.0, 0.1, 100.0);
+                    loadIdentity();
+
+                    mvTranslate([0.0, 0.0, -5.0])
+
+                        mvRotate(xRot, [1, 0, 0]);
+                    mvRotate(yRot, [0, 1, 0]);
+                    mvRotate(zRot, [0, 0, 1]);
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexPositionBuffer);
+                    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+                    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVertexTextureCoordBuffer);
+                    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, cubeVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+                    gl.activeTexture(gl.TEXTURE0);
+                    gl.bindTexture(gl.TEXTURE_2D, neheTexture);
+                    gl.uniform1i(shaderProgram.samplerUniform, 0);
+
+                    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeVertexIndexBuffer);
+                    setMatrixUniforms();
+                    gl.drawElements(gl.TRIANGLES, cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+                }
+
+
+            var lastTime = 0;
+            function animate() {
+                var timeNow = new Date().getTime();
+                if (lastTime != 0) {
+                    var elapsed = timeNow - lastTime;
+
+                    xRot += (90 * elapsed) / 4000.0;
+                    yRot += (90 * elapsed) / 4000.0;
+                    zRot += (90 * elapsed) / 4000.0;
+                }
+                lastTime = timeNow;
+            }
+
+
+            function tick() {
+                drawScene();
+                animate();
+            }
+
+
+            function webGLStart() {
+                var canvas = document.getElementById("canvas");
+                addClass(canvas, "noborder");
+                initGL(canvas);
+                initShaders();
+                initBuffers();
+                initTexture();
+
+                gl.clearColor(0.0, 0.0, 0.0, 0);
+
+                gl.clearDepth(1.0);
+
+                gl.enable(gl.DEPTH_TEST);
+                gl.depthFunc(gl.LEQUAL);
+
+                setInterval(tick, 15);
+            }
+
+
+
+
+        </script>
+        <script>
+
+        // elt.classList is not supported by all the browser.
+        // (For now, only works with Firefox >= 3.6)
+        // Let's fix that.
+        var containsClass = function (elm, className) {
+            if (document.documentElement.classList) {
+                containsClass = function (elm, className) {
+                    return elm.classList.contains(className);
+                }
+            } else {
+                containsClass = function (elm, className) {
+                    if (!elm || !elm.className) {
+                        return false;
+                    }
+                    var re = new RegExp('(^|\\s)' + className + '(\\s|$)');
+                    return elm.className.match(re);
+                }
+            }
+            return containsClass(elm, className);
+        }
+
+        var addClass = function (elm, className) {
+            if (document.documentElement.classList) {
+                addClass = function (elm, className) {
+                    elm.classList.add(className);
+                }
+            } else {
+                addClass = function (elm, className) {
+                    if (!elm) {
+                        return false;
+                    }
+                    if (!containsClass(elm, className)) {
+                        elm.className += (elm.className ? " " : "") + className;
+                    }
+                }
+            }
+            addClass(elm, className);
+        }
+
+        var removeClass = function (elm, className) {
+            if (document.documentElement.classList) {
+                removeClass = function (elm, className) {
+                    elm.classList.remove(className);
+                }
+            } else {
+                removeClass = function (elm, className) {
+                    if (!elm || !elm.className) {
+                        return false;
+                    }
+                    var regexp = new RegExp("(^|\\s)" + className + "(\\s|$)", "g");
+                    elm.className = elm.className.replace(regexp, "$2");
+                }
+            }
+            removeClass(elm, className);
+        }
+
+        var toggleClass = function (elm, className)
+        {
+            if (document.documentElement.classList) {
+                toggleClass = function (elm, className) {
+                    return elm.classList.toggle(className);
+                }
+            } else {
+                toggleClass = function (elm, className) {
+                    if (containsClass(elm, className))
+                    {
+                        removeClass(elm, className);
+                        return false;
+                    } else {
+                        addClass(elm, className);
+                        return true;
+                    }
+                }
+            }
+            return toggleClass(elm, className);
+        }
+
+        // OK, fixed.
+
+
+        </script>
+
+    </body>
+</html>

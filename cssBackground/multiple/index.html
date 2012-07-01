@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="../../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../../resources/styles/hacks.css" type="text/css" media="screen"/>
+
+        <script>
+        var bg = [true, true, true];
+        function toggle_bg(idx_bg, activated, id) {
+            var box = document.getElementById(id);
+            bg[idx_bg] = activated;
+            box.setAttribute("bg", "" + (bg[0] ? 0:"") + (bg[1]? 1:"") + (bg[2]? 2:""));
+        }
+        </script>
+        <style>
+            ul {
+                list-style-type: none;
+                list-style-image: none
+            }
+            .box {
+                -moz-border-radius: 10px;
+                -moz-box-shadow: 0 0 12px 1px rgba(205, 205, 205, 1);
+                border: 1px solid black;
+                padding: 10px;
+            }
+            .box:hover {
+                -moz-box-shadow: 0 0 12px 5px rgba(205, 205, 205, 1);
+            }
+
+            fieldset {
+                border: 0px;
+            }
+            fieldset * {
+                font-family: monospace;
+            }
+            .toolbox {
+                border-top: none;
+            }
+
+            #box_multiple[bg="012"] {
+                background-image: url(../../resources/images/logos/firefox-48.png),
+                            -moz-linear-gradient(right,
+                                                 rgba(0, 0, 0, 0),
+                                                 rgba(0, 0, 0, 1)),
+                            url(../../resources/images/patterns/flowers-pattern.jpg);
+                background-position: top right, top left, top left;
+                background-repeat: no-repeat, repeat, repeat;
+            }
+            #box_multiple[bg="12"] {
+                background-image: -moz-linear-gradient(right,
+                                                 rgba(0, 0, 0, 0),
+                                                 rgba(0, 0, 0, 1)),
+                            url(../../resources/images/patterns/flowers-pattern.jpg);
+                background-position: top left, top left;
+                background-repeat: repeat, repeat;
+            }
+            #box_multiple[bg="02"] {
+                background-image: url(../../resources/images/logos/firefox-48.png),
+                            url(../../resources/images/patterns/flowers-pattern.jpg);
+                background-position: top right, top left;
+                background-repeat: no-repeat, repeat;
+            }
+            #box_multiple[bg="01"] {
+                background-image: url(../../resources/images/logos/firefox-48.png),
+                            -moz-linear-gradient(right,
+                                                 rgba(0, 0, 0, 0),
+                                                 rgba(0, 0, 0, 1));
+                background-position: top right, top left;
+                background-repeat: no-repeat, repeat;
+            }
+            #box_multiple[bg="0"] {
+                background-image: url(../../resources/images/logos/firefox-48.png);
+                background-position: top right;
+                background-repeat: no-repeat;
+            }
+            #box_multiple[bg="1"] {
+                background-image: -moz-linear-gradient(right,
+                                                 rgba(0, 0, 0, 0),
+                                                 rgba(0, 0, 0, 1));
+                background-position: top left;
+                background-repeat: repeat;
+            }
+            #box_multiple[bg="2"] {
+                background-image: url(../../resources/images/patterns/flowers-pattern.jpg);
+                background-position: top left;
+                background-repeat: repeat;
+            }
+
+        </style>
+        <title>Multiple Background &amp; Firefox 3.6</title>
+    </head>
+
+    <body>
+
+
+
+        <a href="http://hacks.mozilla.org" id="hackstitle">
+            <h1>hacks.mozilla.org</h1>
+        </a>
+
+
+        <div id="demo">
+            <h1 id="demotitle">Multiple Background &amp; Firefox 3.6
+            </h1>
+            <div id="intro">
+                <p><a href="http://hacks.mozilla.org/2009/12/css-backgrounds-firefox-36/">See related blog post on hacks.mozilla.org.</a></p>
+                <p>This demo is interactive. Just check/uncheck the boxes with the style settings to see them in action.</p>
+            </div>
+
+            <div class="box" id="box_multiple" bg="012">
+                <h2>Multiple backgrounds</h2>
+                <p>
+                    Here, we have three different backgrounds. A pattern (the blue flowers), an image (the Firefox logo) and a gradient. To define several backgrounds:
+                </p>
+                <pre>
+background-image: background1, background2, ../..., backgroundN;
+                </pre>
+                <p>
+                    Then, you can define the behavior of each background as usual:
+                </p>
+                <pre>
+background-position: position1, position2, ../..., positionN;
+background-repeat: repeat1, repeat2, ../..., repeatN;
+                </pre>
+                <p>
+                    Here is the code for this background-image:
+                </p>
+                <pre>
+background-image: url(../../resources/images/logos/firefox-48.png),
+  -moz-linear-gradient(right,
+     rgba(0, 0, 0, 0),
+     rgba(0, 0, 0, 1)),
+  url(../../resources/images/patterns/flowers-pattern.jpg);
+background-position: top right, top left;
+background-repeat: no-repeat, no-repeat, repeat;
+                </pre>
+                <p>As you can see, the "flowers-pattern" background is covered ("merged") by a gradient.</p>
+                <p>More information about CSS Background:
+                    <a type="mdc" href="https://developer.mozilla.org/en/CSS/background">
+                        here
+                    </a>
+                </p>
+                <p class="toolbox">
+                    Select the backgrounds to display:
+                    <br/>
+                    <label>
+                        <input type="checkbox" checked="true" onclick="toggle_bg(0, this.checked, 'box_multiple');"/>
+                        url(../../resources/images/logos/firefox-48.png),
+                    </label>
+                    <br/>
+                    <label>
+                        <input type="checkbox" checked="true" onclick="toggle_bg(1, this.checked, 'box_multiple');"/>
+                        -moz-linear-gradient(right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)),
+                    </label>
+                    <br/>
+                    <label>
+                        <input type="checkbox" checked="true" onclick="toggle_bg(2, this.checked, 'box_multiple');"/>
+                        url(../../resources/images/patterns/flowers-pattern.jpg);
+                    </label>
+                </p>
+            </div>
+        </div>
+        <div id="hackspromo">
+            <a href="http://www.twitter.com/mozhacks">
+                <img src="../../resources/images/logos/twittericon.png"
+                width="60" height="60" alt="@mozhacks on Twitter"
+                longdesc="http://twitter.com/mozhacks"/>
+            </a>
+            <a href="http://hacks.mozilla.org">
+                <img src="../../resources/images/logos/feed.png"
+                width="60" height="60" alt="Hacks Blog"
+                longdesc="http://hacks.mozilla.org" />
+            </a>
+            <a href="http://www.youtube.com/mozhacks">
+                <img src="../../resources/images/logos/youtube.png"
+                width="60" height="60" alt="Hacks Videos"
+                longdesc="http://www.youtube.com/mozhacks" />
+            </a>
+            <p id="download">To take full advantage of the demo, you need to run a modern browser. Try the latest beta of Firefox 3.6 (<a href="http://www.mozilla.com/firefox/all-rc.html">download</a>).</p>
+            <p class="author">Demo by <a href="http://twitter.com/paulrouget">Paul Rouget</a>.</p>
+        </div>
+
+    </body>
+</html>
+

@@ -1,0 +1,40 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us" manifest="tasks.manifest">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=400"/>
+    <title>Task Manager</title>
+
+    <link type="text/css" rel="stylesheet" href="css/main.css" />
+    <script type="application/javascript" src="js/tasksserver.js"></script>
+    <script type="application/javascript" src="js/taskseffects.js"></script>
+    <script type="application/javascript" src="js/tasksmanager.js"></script>
+<style>
+body, html {
+background: white;
+}
+li {
+background-color: black!important;
+width: 300px;
+font-size: 30px;
+}
+
+h1 {
+font-size: 30px;
+color: black;
+}
+
+
+</style>
+  </head>
+  <body onload="TasksManager.initialize()" onunload="TasksManager.uninitialize()">
+
+<h1>offline Task Manager</h1>
+
+    <ul id="panel">
+      <li onclick="TasksManager.create()">Create a new task</li>
+    </ul>
+
+
+
+  </body>
+</html>

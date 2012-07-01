@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="../../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../../resources/styles/hacks.css" type="text/css" media="screen"/>
+
+        <script>
+        function update_size(size, id) {
+            document.getElementById(id).style.MozBackgroundSize = size;
+        }
+        </script>
+        <style>
+            ul {
+                list-style-type: none;
+                list-style-image: none
+            }
+            .box {
+                -moz-border-radius: 10px;
+                -moz-box-shadow: 0 0 12px 1px rgba(205, 205, 205, 1);
+                border: 1px solid black;
+                padding: 10px;
+            }
+            .box:hover {
+                -moz-box-shadow: 0 0 12px 5px rgba(205, 205, 205, 1);
+            }
+
+            fieldset {
+                border: 0px;
+            }
+            fieldset * {
+                font-family: monospace;
+            }
+            .toolbox {
+                border-top: none;
+            }
+
+            /* Box 2: differents sizes */
+            #box_size {
+                background-image: url(../../resources/images/patterns/stars.jpg);
+                -moz-background-size: 30%;
+                font-weight: bold;
+            }
+        </style>
+        <title>Background Size &amp; Firefox 3.6</title>
+    </head>
+
+    <body>
+
+
+
+        <a href="http://hacks.mozilla.org" id="hackstitle">
+            <h1>hacks.mozilla.org</h1>
+        </a>
+
+
+        <div id="demo">
+            <h1 id="demotitle">Background Size &amp; Firefox 3.6
+            </h1>
+            <div id="intro">
+                <p><a href="http://hacks.mozilla.org/2009/12/css-backgrounds-firefox-36/">See related blog post on hacks.mozilla.org.</a></p>
+                <p>This demo is interactive. You can define the size of the background.</p>
+            </div>
+            <div class="box" id="box_size">
+                <h2>Background size</h2>
+                <p>
+                    This div has a background image. You can define the size of the background (see interactive control below).
+                    Here, the background has been set to use 30 percent of the div.
+                </p>
+                <pre>
+background-image: url(../../resources/images/patterns/stars.jpg);
+-moz-background-size: 30%;
+                </pre>
+                <p>
+                    See MDC for more details:
+                    <a type="mdc" href="https://developer.mozilla.org/en/CSS/-moz-background-size">Background-size</a>.
+                </p>
+                <p class="toolbox">
+                    <fieldset>
+                        <label for="size">Select size of the background-image:</label>
+                        <select name="size" id="size" onchange="update_size(this.value, 'box_size')">
+                            <option value="10%">10%</option>
+                            <option value="20%">20%</option>
+                            <option value="30%" selected="selected">30%</option>
+                            <option value="40%">40%</option>
+                            <option value="50%">50%</option>
+                            <option value="60%">60%</option>
+                            <option value="70%">70%</option>
+                            <option value="80%">80%</option>
+                            <option value="90%">90%</option>
+                            <option value="100%">100%</option>
+                        </select>
+                    </fieldset>
+
+                </p>
+
+            </div>
+	</div>
+        <div id="hackspromo">
+            <a href="http://www.twitter.com/mozhacks">
+                <img src="../../resources/images/logos/twittericon.png"
+                width="60" height="60" alt="@mozhacks on Twitter"
+                longdesc="http://twitter.com/mozhacks"/>
+            </a>
+            <a href="http://hacks.mozilla.org">
+                <img src="../../resources/images/logos/feed.png"
+                width="60" height="60" alt="Hacks Blog"
+                longdesc="http://hacks.mozilla.org" />
+            </a>
+            <a href="http://www.youtube.com/mozhacks">
+                <img src="../../resources/images/logos/youtube.png"
+                width="60" height="60" alt="Hacks Videos"
+                longdesc="http://www.youtube.com/mozhacks" />
+            </a>
+            <p id="download">To take full advantage of the demo, you need to run a modern browser. Try the latest beta of Firefox 3.6 (<a href="http://www.mozilla.com/firefox/all-rc.html">download</a>).</p>
+            <p class="author">Demo by <a href="http://twitter.com/paulrouget">Paul Rouget</a>.</p>
+        </div>
+
+    </body>
+</html>
+

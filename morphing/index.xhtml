@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!-- TODO
+* moyenne
+* workers
+* more cache?
+-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <script src="geometry.js"/>
+        <script src="main.js"/>
+        <script src="delaunay.js"/>
+        <script src="morphing.js"/>
+        <script src="geometry.js"/>
+        <script src="processor.js"/>
+        <script src="json2.js"/>
+        <script src="../resources/js/math.js"/>
+        <script src="../resources/js/canvas.js"/>
+        <script src="../resources/js/log.js"/>
+        <script src="../resources/js/time.js"/>
+        <script src="../resources/js/array.js"/>
+
+        <link rel="stylesheet" href="../resources/styles/html5.css" type="text/css" media="screen"/>
+        <link rel="stylesheet" href="../resources/styles/fonts.css" type="text/css" media="screen"/>
+        <style>
+            body {
+                background-color: black;
+                color: white;
+            }
+            canvas {
+                border: 1px solid white;
+            }
+            #destination, #source {
+                display: none;
+            }
+            #playground {
+            }
+        </style>
+        <title>Morphing</title>
+    </head>
+
+    <body onload="init()">
+
+        <h1>JS Morphing</h1>
+
+        <div id="content">
+            <canvas id="playground"/>
+            <canvas id="result"/>
+            <br/>
+            <img src="imgs/tristan.jpg" id="source"/>
+            <img src="imgs/pascal.jpg" id="destination"/>
+            <br/>
+            <button id="loadButton" disabled="true" onclick="load()">Load</button>
+            <button id="purgeButton" disabled="true" onclick="purge()">Purge</button>
+            <button id="saveButton" onclick="save()">Save</button>
+            <br/>
+            <button onclick="_import()">import</button>
+            <button onclick="_export()">export</button>
+            <br/>
+            <button onclick="launch()">delaunay()</button>
+            <button onclick="morph()">morph()</button>
+        </div>
+    </body>
+</html>
+
+
+

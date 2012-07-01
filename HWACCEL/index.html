@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hardware Acceleration Stress Test.</title>
+    <style>
+      body, html {
+        padding: 0;
+        margin: 0;
+        background-color: black;
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+      #warning {
+        color: white;
+        position: absolute;
+	bottom: 0px;
+	right: 0px;
+      }
+      #seal {
+          z-level: 1000;
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 200px;
+          height: 120px;
+          border: 4px solid black;
+          text-align: center;
+          background-color: white;
+          -moz-transition-duration: 1s;
+          -webkit-transition-duration: 1s;
+          -o-transition-duration: 1s;
+          transition-duration: 1s;
+      }
+
+      #seal {
+          opacity: 1;
+      }
+      .running #seal {
+          opacity: 0;
+      }
+      #seal > h1 {
+          margin: auto;
+          font-size: 15px;
+          width: 80%;
+          color: black;
+          border-bottom: 1px solid grey;
+          margin-bottom: 20px;
+      }
+      #seal a {
+          font-size: 20px;
+          text-decoration: none;
+          color: black;
+      }
+
+      #message {
+          opacity: 1;
+          width: 400px;
+          -moz-transition-duration: 1s;
+          color: white;
+          margin: auto;
+          font-size: 100px;
+          margin-top: 200px;
+
+          position: fixed;
+          left: 50%;
+          margin-left: -170px;
+      }
+
+      .running #message {
+        opacity: 0;
+      }
+
+
+      #controls {
+        opacity: 0;
+        -moz-transition-duration: 1s;
+        position: fixed;
+        margin: 10px;
+        background-color: white;
+        bottom: 5px;
+        padding: 5px;
+        border: 5px solid black;
+        z-index: 99;
+        font-size: 50px;
+      }
+
+      .running #controls {
+          opacity: 1;
+      }
+
+      #controls * {
+        vertical-align: middle;
+      }
+      button {
+        height: 50px;
+        font-size: 30px;
+      }
+
+      canvas {
+        opacity: 0;
+        -moz-transition-duration: 1s;
+        display: block;
+        margin: auto;
+        width: 100%;
+        height: 100%;
+      }
+
+      .running canvas {opacity: 1;}
+      img {display: none;}
+    </style>
+    <script>
+      window.onload = function() {
+        document.body.className = "running";
+        document.querySelector("button").removeAttribute("disabled");
+        var stop = true;
+        var img = document.querySelector("img");
+        var video = document.querySelector("video");
+        var canvas = document.querySelector("canvas");
+        var ctx = canvas.getContext("2d");
+
+        var width = canvas.width;
+        var height = canvas.height;
+
+        var cx = width / 2;
+        var cy = height / 2;
+
+        ctx.fillRect(0, 0, width, height);
+        ctx.fillStyle = "white";
+
+
+        // Parameters
+        var imgs = [];
+
+        var l = 40;
+        for (var i = 0; i < l; i++) {
+          imgs.push({img: i % 16, pos: (100 * i / l)});
+        }
+
+        var TO = 30;
+        var step = 0.003;
+
+        var ra = 0;
+
+        var fps = 0;
+
+        function draw() {
+          ctx.clearRect(0, 0, width, height);
+          for (var t = 0; t < imgs.length; t++) {
+            ctx.save();
+            computeTransform(imgs[t].pos);
+            drawImage(imgs[t].img);
+            ctx.restore();
+            imgs[t].pos += 20 * step;
+          }
+          if (imgs[imgs.length - 1].pos >= 100) {
+            var n = imgs.pop();
+            n.pos = 0;
+            imgs.unshift(n);
+          }
+
+          ra += step;
+          xradius = 40 + Math.cos(ra) * 12;
+          yradius = 40 + Math.sin(ra) * 12;
+
+          fps++;
+          if (!stop) setTimeout(draw, TO);
+        }
+
+
+        var fpsInterval = setInterval(checkFPS, 1000);
+
+        var totalfps = 0;
+        var count = 0;
+        var computeMean = false;
+        function checkFPS() {
+          var aFps = fps > 60 ? "60+" : fps;
+          document.getElementById("fps").innerHTML = aFps+ " FPS";
+          if (computeMean) {
+            count++;
+            totalfps += fps;
+          }
+          fps = 0;
+        }
+
+        setTimeout(draw, 0);
+        window.go = function () {
+          document.querySelector("button").disabled = true;
+          document.querySelector("button").innerHTML = "Working....";
+          stop = false;
+          setTimeout(draw, 0);
+          setTimeout(goFast, 3000);
+        }
+
+        var lasts = 20;
+        var s_step = (0.03 - 0.003) / lasts;
+        var s_TO = 30 / lasts;
+        function goFast() {
+          var i = 0;
+          var interval = setInterval(function() {
+            step += s_step;
+            TO -= s_TO;
+            i++;
+            if (i == lasts) {
+              computeMean = true;
+              clearInterval(interval);
+              setTimeout(end, 7000);
+            }
+          }, 100);
+        }
+
+        function goSlow() {
+          var i = 0;
+          var interval = setInterval(function() {
+            step -= s_step;
+            TO += s_TO;
+            i++;
+            if (i == lasts) {
+              clearInterval(interval);
+              stop = true;
+            }
+          }, 40);
+
+        }
+
+        function end() {
+          goSlow();
+          clearInterval(fpsInterval);
+          document.querySelector("button").innerHTML = "done";
+          var meanFps = Math.round(totalfps / count);
+	  if (meanFps > 60) meanFps = "60+";
+          document.querySelector("#message").innerHTML = meanFps + " FPS";
+          document.getElementById("fps").innerHTML = meanFps + " FPS";
+          document.body.className = "";
+        }
+
+        /********
+        * Params
+        *********/
+
+        var start = -10;
+        var length = 29;
+        var a = 1.2;
+        var xradius = 50;
+        var yradius = 50;
+        function r(t) {return Math.pow(a, t);}
+        function x(t, _t) {return _t * Math.cos(t);}
+        function y(t, _t) {return _t * Math.sin(t);}
+        function computeTransform(t) {
+            t = (t / 100) * length + start;
+            var _t = r(t);
+            var _x = x(t, _t);
+            var _y = y(t, _t);
+            ctx.translate(cx + xradius * _x, cy + yradius * _y);
+            ctx.rotate(t);
+            ctx.scale(_t / 2, _t / 2);
+        }
+
+        function drawImage(idx) {
+          idx = idx % 16;
+          var offset = (485 * idx)
+          ctx.drawImage(img, 0, offset, 640, 480, 0, 0, 64, 48);
+        }
+
+
+      }
+    </script>
+  </head>
+  <body>
+    <p id="message">Loading...</p>
+    <div id="controls">
+      <span>How fast is your browser?</span>
+      <span id="fps"></span>
+      <button disabled onclick="go()">start</button>
+    </div>
+    <canvas width="1900" height="1200"></canvas>
+    <img src="mosaic.jpg">
+    <div id="seal"><h1>More details on</h1><p><a href="http://hacks.mozilla.org/2010/09/hardware-acceleration">hacks.mozilla.org</a></p></div>
+    <em id="warning">Results limited to 60 FPS</em>
+  </body>
+</html>
